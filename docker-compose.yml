@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379" # Expose Redis if you need to connect from outside Docker
+    volumes:
+      - redis_data:/data # Persist Redis data (optional for this use case if queues are transient)
+
+  submitter: # Service to run submit_jobs.py
+    build:
+      context: .
+      dockerfile: base.Dockerfile
+    depends_on:
+      - redis
+    volumes:
+      - ./web3_orgs.txt:/app/web3_orgs.txt:ro # Mount the orgs list read-only
+      # - .:/app # Optional: mount current dir to /app for live code changes during dev
+    environment:
+      # Ensure Python sees the modules in /app
+      PYTHONPATH: /app
+    # This service will run once and exit
+    command: ["python", "gitsens/submit_jobs.py"]
+
+  crawler_worker:
+    build:
+      context: .
+      dockerfile: base.Dockerfile
+
+    depends_on:
+      - redis
+    volumes:
+      # - .:/app # Optional: mount for dev
+      # Optional: Mount GitHub CLI config for authenticated requests (higher rate limits)
+      # See GitHub API limits section below for why this might be needed.
+      - ~/.config/gh:/root/.config/gh:ro
+      - ./analysis_output:/app/analysis_output # Persist analysis output
+    environment:
+      PYTHONPATH: /app
+    # Command to start the RQ worker for the crawler queue
+    command: >
+      sh -c "
+      echo 'Waiting for Redis...' &&
+      while ! nc -z redis 6379; do
+        sleep 1;
+      done;
+      echo 'Redis is up, starting crawler worker.';
+      rq worker -c config web3_crawler_queue --url redis://redis:6379/0
+      "
+    deploy: # For scaling workers if needed (docker-compose up --scale crawler_worker=N)
+      replicas: 1 # Start with 1, can be scaled
+
+  analyzer_worker:
+    build:
+      context: .
+      dockerfile: base.Dockerfile
+    depends_on:
+      - redis
+    volumes:
+      # - .:/app # Optional: mount for dev
+      - ~/.config/gh:/root/.config/gh:ro # If gh clone needs auth
+      - ./analysis_output:/app/analysis_output # Persist analysis output
+    environment:
+      PYTHONPATH: /app
+    # Command to start the RQ worker for the analyzer queue
+    command: >
+      sh -c "
+      echo 'Waiting for Redis...' &&
+      while ! nc -z redis 6379; do
+        sleep 1;
+      done;
+      echo 'Redis is up, starting analyzer worker.';
+      rq worker -c config web3_analyzer_queue --url redis://redis:6379/1
+      "
+    deploy:
+      replicas: 1 # Start with 1, can be scaled
+
+volumes:
+  redis_data:
