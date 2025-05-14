@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gitsens"  
+version = "0.1.0"  
+description = "Git-sensitive application."  #  
+authors = [
+    {name = "Your Name", email = "hypocycloid@duck.com"}  
+]
+dependencies = [
+    "redis",
+    "rq"
+]
+
+
+[tool.setuptools]
+packages = ["gitsens"] 
+
+[tool.setuptools.package-dir]
+"gitsens" = "gitsens"  
+
+[tool.setuptools.exclude-package-data]
+"gitsens" = ["*.pyc"]  
+
+[tool.setuptools.package-data]  
+"gitsens" = ["*.txt", "*.csv"] 
+
+
+[tool.mypy]
+python_version = "3.12" 
+strict = true
+
+[tool.coverage.run]
+branch = true
+source = ["gitsens"]  # Which code to measure coverage on.
+
+[tool.coverage.report]
+fail_under = 80  # Minimum coverage percentage to pass.
+show_missing = true
