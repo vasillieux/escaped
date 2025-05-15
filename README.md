@@ -1,26 +1,29 @@
 ## Gitsens 
 
-What is? Semantic scanner for thousands of github repository 
+**What is**? Semantic scanner for thousands of (git-) github repositories on leaing sensitive information.
 
-Parsing repositories with filters for *blobs*:
+**The flow**:
+1. Parsing repositories
+2. Checking deleted/history data with filters (**blobs** data)
     - Codebase languages ( contains `.html, .py, .rs, .json, .sol` )
     - Codebase configuration files (`docker-compose.yaml`, `.env`, `.k8s`, '.js', `.py`)
-    - Generic binary files  
+    - Generic binary files 
         - Compiled .exe with patched secrets 
         - `.pyc` and others language-specific precompiled/cache  
 
-Simply, for each of the blob filetype we have to run different regexp parsers
+3. Simply, for each of the blob filetype we have to run different regexp parsers + trufflehog.
 
 ## Installation (No DOCKER) 
 
 ### Prerequirements 
 - Trufflehog 
-- GH (Github-CLI)
+- GH (Github-CLI) 
+    - You need to setup your GH cli before run the program.
 
 Then run with python 3.12 
 - `pip install -r requirements.txt`
 
-## Using GH 
+## Using GH, to locate the repositories you want to parse. 
 
 ### Solidity projects with "hardhat"
 - `gh search repos --limit 500 --json fullName --jq '.[].fullName' 'hardhat language:Solidity' > hardhat_solidity_repos.txt`
@@ -32,7 +35,11 @@ Then run with python 3.12
 - `gh search code --limit 500 --json repository.fullName,path --jq '.[] | .repository.fullName + "/" + .path' 'filename:.env PRIVATE_KEY' > potential_dotenv_leaks.txt`
 
 
-### Running 
+Make sure that redis is running 
+To start redis:
+- `docker-compose up redis`
+
+### Usage (Manual) 
 
 Start Crawler Worker(s):
 - `rq worker -c config web3_crawler_queue --url redis://localhost:6379/0`
@@ -42,7 +49,8 @@ Start Analyzer Worker(s):
 
 Submit Initial Jobs:
 - `python gitsens/submit_jobs.py`
-
+! Warning. If you're submitting jobs to analyzer directly, specify (populize) file, commonly named `direct_repos_to_analyze.txt`. 
+To check the details, look at the `gitsens/submit_jobs` implementation.
 
 ## Installation (Docker)
 
@@ -53,7 +61,7 @@ volumes:
   - ~/.config/gh:/root/.config/gh:ro
 ```
 
-## Running 
+### Usage (Docker) 
 - `docker-compose up --build`
 
 Check logs 
@@ -62,9 +70,32 @@ Check logs
 `docker-compose logs -f analyzer_worker`
 
 
+## Process
+After start the analyzer will clone with batch the specified repository in 
+`./analysis_output`
+
+And the tree will looks like
+
+```
+analysis_output
+    ├── cloned_repos 
+    ├── custom_regex_findings
+    ├── dangling_blobs
+    ├── restored_files
+    └── trufflehog_findings
+```
+
 ## Constraints 
 - GH api limit 50000 requrests/hour
+- Limited heuristics
+- No post-analysis of output data 
 
 ## How to win 
 
 It's a secret. Stay tuned.
+
+
+## Credits 
+
+Thanks trufflehog for the great security and reconnaissance tool!
+You can find it at - https://github.com/trufflesecurity/trufflehog
