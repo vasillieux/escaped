@@ -1,3 +1,8 @@
+.env
+analysis_output/
+
+*.txt
+
 venv
 **/.pyc
 **/__pycache__
