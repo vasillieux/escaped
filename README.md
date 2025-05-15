@@ -86,9 +86,10 @@ analysis_output
 ```
 
 ## Constraints 
-- GH api limit 50000 requrests/hour
+- GH api limit 5000 requests/hour
 - Limited heuristics
 - No post-analysis of output data 
+- Only GITHUB (for a while).
 
 ## How to win 
 
