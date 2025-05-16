@@ -301,12 +301,14 @@ def run_trufflehog(scan_path, org_name, repo_name, scan_type="repo_history"):
     safe_org = "".join(c if c.isalnum() else "_" for c in org_name)
     safe_repo = "".join(c if c.isalnum() else "_" for c in repo_name)
     results_file = os.path.join(TRUFFLEHOG_RESULTS_PATH, f"{safe_org}_{safe_repo}_{scan_type}_trufflehog.json")
+
+    # trufflehog filesystem --only-verified --print-avg-detector-time --include-detectors="all" ./ > secrets.txt 
     if scan_type == "repo_history":
         abs_scan_path = os.path.abspath(scan_path)
         file_uri_path = f"file://{abs_scan_path}" 
         trufflehog_cmd = ["trufflehog", "git", file_uri_path, "--json"]
     else:
-        trufflehog_cmd = ["trufflehog", "filesystem", scan_path, "--json"]
+        trufflehog_cmd = ["trufflehog", "filesystem", "--only-verified", "--print-avg-detector-time", "--include-detectors=all" , scan_path, "--json"]
     print(f"[Analyzer] Executing: {' '.join(trufflehog_cmd)}")
     try:
         process = subprocess.Popen(trufflehog_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8')
@@ -325,6 +327,8 @@ def run_trufflehog(scan_path, org_name, repo_name, scan_type="repo_history"):
 
 def analyze_content_with_heuristics(file_path_for_logging, file_name_for_ext_check, content_str, org_name, repo_name, source_type): 
     findings = []
+
+
     for heuristic in ALL_HEURISTICS:
         apply_heuristic = True
         if "target_extensions" in heuristic:
@@ -348,7 +352,10 @@ def run_custom_analyzer_on_path(base_scan_path, org_name, repo_name, source_type
     all_findings = []
     safe_org = "".join(c if c.isalnum() else "_" for c in org_name)
     safe_repo = "".join(c if c.isalnum() else "_" for c in repo_name)
+
     custom_log_file = os.path.join(CUSTOM_REGEX_RESULTS_PATH, f"{safe_org}_{safe_repo}_{source_type_label}_all_heuristics_findings.json")
+
+    # NOTE sometimes too long, somehow should be limited
     for root, _, files in os.walk(base_scan_path):
         for file_name in files:
             file_path_abs = os.path.join(root, file_name)
@@ -375,7 +382,9 @@ def run_custom_analyzer_on_path(base_scan_path, org_name, repo_name, source_type
         with open(custom_log_file, "w", encoding='utf-8') as f: json.dump([], f, indent=2)
 
 
-def analyze_repository_job(org_name, repo_name):
+# TODO: add support for multiple analyzers 
+# i.e: trufflehog, regexps 
+def analyze_repository_job(org_name, repo_name, enabled_analyzers: list = None):
     """
     this is the main job an analyzer worker picks up.
     it tries to get a 'slot' to run, clones the repo, does all the scans,
@@ -406,6 +415,7 @@ def analyze_repository_job(org_name, repo_name):
         job_timeout = current_rq_job.timeout if current_rq_job and current_rq_job.timeout else '3h' 
 
         # rq 1.10+ has enqueue_in for delayed jobs
+        # retry..
         try: 
             from datetime import timedelta # only import if needed
             analyzer_queue_self.enqueue_in(
@@ -441,9 +451,12 @@ def analyze_repository_job(org_name, repo_name):
 
         # --- 2. do all the scanning ---
         print(f"[analyzer] ok, repo cloned to {local_repo_path}. starting scans...")
+
+        # ! NOTE is it makes sense to run trufflehog few times?
+        # ! NOTE i guess trufflehog(repo_1 | repo_2 | repo_3) is the same that trufflehog(repo1) | trufflehog(repo2) | trufflehog(repo3)
         
         # A. trufflehog on the whole git history
-        run_trufflehog(local_repo_path, org_name, repo_name, scan_type="repo_history")
+        run_trufflehog(local_repo_path, org_name, repo_name, scan_type="local_repo")
 
         # B. find deleted files, save them, then scan them
         path_to_restored_files = restore_deleted_files_in_repo(local_repo_path, org_name, repo_name)
@@ -451,7 +464,7 @@ def analyze_repository_job(org_name, repo_name):
         if os.path.exists(path_to_restored_files) and any(f.is_file() for f in os.scandir(path_to_restored_files) if not f.name.startswith('_')):
             print(f"[analyzer] found/restored some deleted files at {path_to_restored_files}, scanning them...")
             run_trufflehog(path_to_restored_files, org_name, repo_name, scan_type="restored_files")
-            run_custom_analyzer_on_path(path_to_restored_files, org_name, repo_name, source_type_label="restored_file")
+            # run_custom_analyzer_on_path(path_to_restored_files, org_name, repo_name, source_type_label="restored_file")
         else:
             print(f"[analyzer] no deleted files were restored (or folder is empty) for {org_name}/{repo_name}.")
 
@@ -460,13 +473,13 @@ def analyze_repository_job(org_name, repo_name):
         if os.path.exists(path_to_dangling_blobs) and any(f.is_file() for f in os.scandir(path_to_dangling_blobs) if not f.name.startswith('_')):
             print(f"[analyzer] found some dangling blobs at {path_to_dangling_blobs}, scanning them...")
             run_trufflehog(path_to_dangling_blobs, org_name, repo_name, scan_type="dangling_blobs")
-            run_custom_analyzer_on_path(path_to_dangling_blobs, org_name, repo_name, source_type_label="dangling_blob")
+            # run_custom_analyzer_on_path(path_to_dangling_blobs, org_name, repo_name, source_type_label="dangling_blob")
         else:
             print(f"[analyzer] no dangling blobs found (or folder is empty) for {org_name}/{repo_name}.")
 
         # D. scan the current files in the cloned repo (not just history/deleted)
         print(f"[analyzer] scanning current files in the cloned repo at {local_repo_path}...")
-        run_custom_analyzer_on_path(local_repo_path, org_name, repo_name, source_type_label="cloned_repo_current_fs")
+        # run_custom_analyzer_on_path(local_repo_path, org_name, repo_name, source_type_label="cloned_repo_current_fs")
         
         did_analysis_finish_ok = True # if we made it here, all main steps were attempted
 
