@@ -32,7 +32,7 @@ def submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt"):
     # connect to the crawler's queue
     redis_crawler_q_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_CRAWLER)
     crawler_q = Queue(CRAWLER_QUEUE_NAME, connection=redis_crawler_q_conn)
-    
+
     # also need to check the global pipeline counter
     redis_pipeline_counter_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_SEMAPHORE)
 
@@ -216,14 +216,14 @@ def main():
     # running options bellow 
 
     # 1. directly to start analyzer
-    submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt")
+    # submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt")
 
     # 2. send a github search query to the crawler
     # my_search_query = 'language:Solidity "Ownable.sol" stars:>10'
     # submit_gh_search_to_crawler_limited(search_query=my_search_query, gh_results_limit=20) # small limit for testing
 
     # 3. send a list of specific repos straight to the analyzer
-    # submit_direct_repo_list_to_analyzer_limited(repo_list_file="direct_repos_to_analyze.txt")
+    submit_direct_repo_list_to_analyzer_limited(repo_list_file="direct_repos_to_analyze.txt")
     
     print(f"\n--- submitter script finished (or is still gently submitting) ---")
     print("check worker logs and 'rq info' in another terminal to see what's happening.")
