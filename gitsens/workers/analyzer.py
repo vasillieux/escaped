@@ -290,7 +290,7 @@ def extract_dangling_blobs_in_repo(repo_path, org_name, repo_name):
             try:
                 with open(blob_file_path, "wb") as bf: bf.write(cat_file_result.stdout)
             except Exception as e:
-                 with open(log_file_path, "a", encoding='utf-8') as lf: lf.write(f"ERROR writing blob {blob_file_path}: {e}\n")
+                with open(log_file_path, "a", encoding='utf-8') as lf: lf.write(f"ERROR writing blob {blob_file_path}: {e}\n")
         elif cat_file_result and hasattr(cat_file_result, 'returncode'):
             with open(log_file_path, "a", encoding='utf-8') as lf: lf.write(f"ERROR git cat-file for blob {blob_hash}. RC: {cat_file_result.returncode}. Stderr: {cat_file_result.stderr.decode(errors='ignore') if cat_file_result.stderr else 'N/A'}\n")
     return output_base_dir

@@ -33,7 +33,7 @@ services:
     volumes:
     # TODO ... make github authenticaton
       - ~/.config/gh:/root/.config/gh:ro
-      - ./analysis_output:/app/analysis_output # Persist analysis output
+      - ./analysis_output:/app/analysis_output:z # Persist analysis output
     environment:
       PYTHONPATH: /app
     # Command to start the RQ worker for the crawler queue
