@@ -72,7 +72,7 @@ class Worker:
         self._logger.info(f"Received message: {body.decode()}")
         try:
             self.process_task(body.decode(), properties)
-            time.sleep(6)  # Simulate processing time
+            time.sleep(6)
             ch.basic_ack(delivery_tag=method.delivery_tag)
             self._logger.info("Message processed and acknowledged.")
         except Exception as e:
