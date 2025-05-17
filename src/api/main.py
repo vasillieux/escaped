@@ -24,9 +24,8 @@ async def lifespan(app: FastAPI):
     logger.info("Starting FastAPI app with lifespan...")
     publisher.connect()
 
-    yield  # Run the app
+    yield
 
-    # Shutdown
     logger.info("Shutting down FastAPI app...")
     publisher.close()
 
