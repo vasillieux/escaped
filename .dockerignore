@@ -1,0 +1,6 @@
+.venv
+.git*
+README.md
+.DS_Store
+uv.lock
+__pycache__/

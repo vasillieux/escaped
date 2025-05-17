@@ -1,0 +1,15 @@
+FROM python:3.13-slim
+
+WORKDIR /app
+
+RUN pip install uv
+
+COPY pyproject.toml ./
+
+RUN uv sync
+
+COPY src/api ./src/api
+
+ENV PYTHONPATH=/app
+
+CMD ["uv", "run", "uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"] 

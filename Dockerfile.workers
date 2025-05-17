@@ -1,0 +1,15 @@
+FROM python:3.13-slim
+
+WORKDIR /app
+
+RUN pip install uv
+
+COPY pyproject.toml ./
+
+RUN uv sync
+
+COPY src/workers ./src/workers
+
+ENV PYTHONPATH=/app
+
+CMD ["uv", "run", "python", "-u", "-m", "src.workers.main"] 
