@@ -17,11 +17,10 @@ DENYLIST_EXTENSIONS = {
     '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp',
     '.mp4', '.mo1', '.avi', '.mkv', '.webm',
     '.mp3', '.wav', '.ogg', '.flac',
-    '.zip', '.tar', '.gz', '.rar', '.7z',
-    '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
-    '.iso', '.img', '.bin', '.exe', '.dll', '.so',
-    '.pyc', '.pyo',
-    '.lockb', '.lock'
+    '.tar', '.gz', '.rar', 
+    '.pdf', '.doc', '.docx', '.ppt', '.pptx',
+    '.iso', '.img', '.bin', '.dll',
+    '.lockb', '.lock', '.sol'
 }
 
 # --- cache --- 
