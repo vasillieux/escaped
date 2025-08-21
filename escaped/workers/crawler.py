@@ -33,7 +33,7 @@ def discover_repos_from_org_list_job(org_names_list):
             "gh", "repo", "list", org_name,
             "-L", str(MAX_REPOS_PER_ORG), 
             "--json", "nameWithOwner", 
-            "--jq", '".[].nameWithOwner"'
+            "--jq", '.[].nameWithOwner' # double " quotes wont work
         ]
         repos_result = run_command(list_repo_cmd, timeout=5) 
 

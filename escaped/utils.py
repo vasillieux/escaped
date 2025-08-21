@@ -91,7 +91,7 @@ def run_command(command_list, cwd=None, capture_output=True, text=True, check=Fa
         if GITHUB_TOKEN: # if not locally setuped gh!
             env["GITHUB_TOKEN"] = GITHUB_TOKEN
 
-        env["GH_PAGER"] = "cat"
+        #env["GH_PAGER"] = "cat"
         
         result = subprocess.run(
             command_list,
