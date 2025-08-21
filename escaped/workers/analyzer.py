@@ -423,7 +423,7 @@ def run_analyzers(*, path=None, org_name=None, repo_name=None, scan_type=None, e
 
 # TODO: add support for multiple analyzers 
 # i.e: trufflehog, regexps 
-def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, enable_custom_analyzers: bool = False):
+def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, enable_custom_analyzers: bool = True):
     """
     this is the main job an analyzer worker picks up.
     it tries to get a 'slot' to run, clones the repo, does all the scans,
