@@ -411,6 +411,77 @@ def run_custom_analyzer_on_path(base_scan_path, org_name, repo_name, source_type
     else: 
         with open(custom_log_file, "w", encoding='utf-8') as f: json.dump([], f, indent=2)
 
+def scan_git_artifacts_with_custom_heuristics(base_artifact_path, org_name, repo_name, artifact_type):
+    """
+    Scans a directory of git artifacts (either 'restored_files' or 'dangling_blobs')
+    using all custom heuristics. This function is purpose-built for this task.
+    
+    Args:
+        base_artifact_path (str): The path to the directory containing the artifacts to scan.
+                                  (e.g., 'analysis_output/restored_files/org/repo')
+        org_name (str): The organization name.
+        repo_name (str): The repository name.
+        artifact_type (str): A label for the scan, either 'restored_files' or 'dangling_blobs'.
+    """
+    print(f"[analyzer] Running custom heuristics on git artifacts: '{artifact_type}' at {base_artifact_path}...")
+    all_findings = []
+    safe_org = "".join(c if c.isalnum() else "_" for c in org_name)
+    safe_repo = "".join(c if c.isalnum() else "_" for c in repo_name)
+
+    # Create a specific and clear log file name
+    custom_log_file = os.path.join(CUSTOM_REGEX_RESULTS_PATH, f"{safe_org}_{safe_repo}_{artifact_type}_custom_findings.json")
+
+    if not os.path.isdir(base_artifact_path):
+        print(f"[analyzer] Artifact directory does not exist, skipping custom scan: {base_artifact_path}")
+        return 
+
+    for root, _, files in os.walk(base_artifact_path):
+        for file_name in files[0:10]:
+            if file_name.startswith('_') and file_name.endswith('.txt'):
+                continue
+
+            file_path_abs = os.path.join(root, file_name)
+
+            try:
+                _, file_extension = os.path.splitext(file_name)
+                if file_extension.lower() in DENYLIST_EXTENSIONS:
+                    continue
+                
+                if MAX_FILE_SIZE_TO_SCAN_BYTES > 0:
+                    if os.path.getsize(file_path_abs) > MAX_FILE_SIZE_TO_SCAN_BYTES:
+                        print(f"[analyzer] skipping large artifact file: {file_name}")
+                        continue
+            except OSError:
+                continue # File might not exist anymore, skip it
+            file_path_for_logging = file_name
+
+            content_str = ""
+            try:
+                with open(file_path_abs, "rb") as f_bin:
+                    binary_content = f_bin.read()
+                content_str = binary_content.decode('utf-8', errors='replace')
+            except Exception as e_read:
+                print(f"[analyzer] warning: could not read artifact file {file_path_abs}: {e_read}")
+                continue
+            
+            if content_str:
+                current_findings = analyze_content_with_heuristics(
+                    file_path_for_logging, 
+                    file_name, # Pass filename for extension checking
+                    content_str, 
+                    org_name, repo_name, 
+                    artifact_type 
+                )
+                all_findings.extend(current_findings)
+
+    if all_findings:
+        with open(custom_log_file, "w", encoding='utf-8') as f:
+            json.dump(all_findings, f, indent=2)
+        print(f"[analyzer] Custom heuristic findings for '{artifact_type}' saved to {custom_log_file}")
+    else: 
+        with open(custom_log_file, "w", encoding='utf-8') as f:
+            json.dump([], f, indent=2)
+        print(f"[analyzer] No custom heuristic findings for '{artifact_type}'.")
 
 def run_analyzers(*, path=None, org_name=None, repo_name=None, scan_type=None, enable_trufflehog: bool = True, enable_custom_analyzer: bool = False):
 
@@ -505,16 +576,7 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
         # check if anything was actually restored before scanning an empty folder
         if os.path.exists(path_to_restored_files) and any(f.is_file() for f in os.scandir(path_to_restored_files) if not f.name.startswith('_')):
             print(f"[analyzer] found/restored some deleted files at {path_to_restored_files}, scanning them...")
-            run_analyzers(
-                path=path_to_restored_files,
-                org_name=org_name, 
-                repo_name=repo_name, 
-                scan_type="restored_files",
-                enable_trufflehog=enable_trufflehog,
-                enable_custom_analyzer=enable_custom_analyzers,
-            )
-            # run_trufflehog(path_to_restored_files, org_name, repo_name, scan_type="restored_files")
-            # run_custom_analyzer_on_path(path_to_restored_files, org_name, repo_name, source_type_label="restored_file")
+            scan_git_artifacts_with_custom_heuristics(path_to_restored_files, org_name, repo_name, artifact_type="restored_files")
         else:
             print(f"[analyzer] no deleted files were restored (or folder is empty) for {org_name}/{repo_name}.")
 
@@ -522,17 +584,7 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
         path_to_dangling_blobs = extract_dangling_blobs_in_repo(local_repo_path, org_name, repo_name)
         if os.path.exists(path_to_dangling_blobs) and any(f.is_file() for f in os.scandir(path_to_dangling_blobs) if not f.name.startswith('_')):
             print(f"[analyzer] found some dangling blobs at {path_to_dangling_blobs}, scanning them...")
-
-            run_analyzers(
-                path=path_to_dangling_blobs,
-                org_name=org_name, 
-                repo_name=repo_name, 
-                scan_type="dangling_blobs",
-                enable_trufflehog=enable_trufflehog,
-                enable_custom_analyzer=enable_custom_analyzers,
-            )
-            # run_trufflehog(path_to_dangling_blobs, org_name, repo_name, scan_type="dangling_blobs")
-            # run_custom_analyzer_on_path(path_to_dangling_blobs, org_name, repo_name, source_type_label="dangling_blob")
+            scan_git_artifacts_with_custom_heuristics(path_to_restored_files, org_name, repo_name, artifact_type="dangling_blobs")
         else:
             print(f"[analyzer] no dangling blobs found (or folder is empty) for {org_name}/{repo_name}.")
 
@@ -547,10 +599,9 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
         # 'finally' will still run. re-raise so RQ knows this job bombed.
         raise
     finally:
-        # --- 3. ALWAYS clean up and release the slot ---
         if local_repo_path and os.path.exists(local_repo_path):
             print(f"[analyzer] cleaning up cloned repo folder: {local_repo_path}")
-            shutil.rmtree(local_repo_path, ignore_errors=True) # ignore_errors is safer
+            #shutil.rmtree(local_repo_path, ignore_errors=True) # ignore_errors is safer
         
         # release the pipeline slot by decrementing the counter
         try:
