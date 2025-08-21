@@ -58,7 +58,7 @@ def submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt"):
         if not current_batch_of_orgs: 
             continue # should not happen if loop logic is right
 
-        # --- this is the "be nice" part: check system load before submitting more ---
+        # check system load before submitting more 
         while True:
             active_pipelines = get_active_pipelines_count(redis_pipeline_counter_conn)
             
