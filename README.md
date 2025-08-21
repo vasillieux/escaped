@@ -42,10 +42,10 @@ To start redis:
 ### Usage (Manual) 
 
 Start Crawler Worker(s):
-- `rq worker -c escaped.config web3_crawler_queue --url redis://localhost:6379/0`
+- `rq worker -c escaped.config escaped_crawler_queue --url redis://localhost:6379/0`
 
 Start Analyzer Worker(s):
-- `rq worker -c escaped.config web3_analyzer_queue --url redis://localhost:6379/1`
+- `rq worker -c escaped.config escaped_analyzer_queue --url redis://localhost:6379/1`
 
 Submit Initial Jobs:
 - `python escaped/submit_jobs.py`
