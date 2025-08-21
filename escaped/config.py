@@ -9,7 +9,7 @@ ACTIVE_PIPELINES_COUNTER_KEY = "escaped:active_pipelines"
 ANALYZER_REQUEUE_DELAY_SECONDS = int(os.getenv("ANALYZER_REQUEUE_DELAY_SECONDS", 120)) 
 
 # smart heuristics to quicker analyze
-SCAN_COMMIT_DEPTH = int(os.getenv("SCAN_COMMIT_DEPTH", 20)) 
+SCAN_COMMIT_DEPTH = int(os.getenv("SCAN_COMMIT_DEPTH", 50)) 
 MAX_FILE_SIZE_TO_SCAN_BYTES = int(os.getenv("MAX_FILE_SIZE_TO_SCAN_BYTES", 1024 * 1024)) # 1MB
 MAX_REPO_AGE_DAYS = int(os.getenv("MAX_REPO_AGE_DAYS", 365 * 2)) # 2 years
 MAX_REPO_SIZE_KB = int(os.getenv("MAX_REPO_SIZE_KB", 1024 * 1024)) # 1GB
@@ -52,7 +52,7 @@ CUSTOM_REGEX_RESULTS_PATH = os.path.join(BASE_OUTPUT_DIR, "custom_regex_findings
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN") 
 
 # --- various limits and timeouts ---
-MAX_REPOS_PER_ORG = 30 # safety net for `gh repo list`
+MAX_REPOS_PER_ORG = 50 # safety net for `gh repo list`
 # REPO_CLONE_TIMEOUT = 1800 # 30 mins (defined again below, remove one)
 TRUFFLEHOG_TIMEOUT = 1800 # 30 mins for trufflehog scan
 
