@@ -14,8 +14,8 @@ REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = 6379 # default redis port
 REDIS_DB_CRAWLER = 0  # for crawler jobs
 REDIS_DB_ANALYZER = 1 # for analyzer jobs
-CRAWLER_QUEUE_NAME = "web3_crawler_queue"
-ANALYZER_QUEUE_NAME = "web3_analyzer_queue"
+CRAWLER_QUEUE_NAME = "escaped_crawler_queue"
+ANALYZER_QUEUE_NAME = "escaped_analyzer_queue"
 # redis db for the global pipeline counter/semaphore
 REDIS_DB_SEMAPHORE = int(os.getenv("REDIS_DB_SEMAPHORE", 3)) 
 
