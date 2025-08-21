@@ -44,7 +44,7 @@ services:
         sleep 1;
       done;
       echo 'Redis is up, starting crawler worker.';
-      rq worker -c escaped.config web3_crawler_queue --url redis://redis:6379/0
+      rq worker -c escaped.config escaped_crawler_queue --url redis://redis:6379/0
       "
     deploy: 
       replicas: 1 

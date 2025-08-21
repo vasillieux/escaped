@@ -33,9 +33,9 @@ def discover_repos_from_org_list_job(org_names_list):
             "gh", "repo", "list", org_name,
             "-L", str(MAX_REPOS_PER_ORG), 
             "--json", "nameWithOwner", 
-            "--jq", ".[].nameWithOwner"
+            "--jq", '".[].nameWithOwner"'
         ]
-        repos_result = run_command(list_repo_cmd)
+        repos_result = run_command(list_repo_cmd, timeout=5) 
 
         if not repos_result or repos_result.returncode != 0 or not repos_result.stdout:
             print(f"[Crawler] Could not list repos for {org_name}. 'gh' tool installed and logged in?")

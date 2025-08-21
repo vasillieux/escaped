@@ -90,9 +90,6 @@ def run_command(command_list, cwd=None, capture_output=True, text=True, check=Fa
         env = os.environ.copy()
         if GITHUB_TOKEN: # if not locally setuped gh!
             env["GITHUB_TOKEN"] = GITHUB_TOKEN
-
-        env["GH_PAGER"] = "cat"
-        
         result = subprocess.run(
             command_list,
             cwd=cwd,
@@ -102,7 +99,6 @@ def run_command(command_list, cwd=None, capture_output=True, text=True, check=Fa
             env=env,
             timeout=timeout
         )
-
         if result.returncode != 0:
              print(f"Warning/Error: Command {' '.join(command_list)} exited with {result.returncode}")
              if result.stderr and capture_output:

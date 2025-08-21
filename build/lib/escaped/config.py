@@ -52,7 +52,7 @@ CUSTOM_REGEX_RESULTS_PATH = os.path.join(BASE_OUTPUT_DIR, "custom_regex_findings
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN") 
 
 # --- various limits and timeouts ---
-MAX_REPOS_PER_ORG = 3 # safety net for `gh repo list`
+MAX_REPOS_PER_ORG = 200 # safety net for `gh repo list`
 # REPO_CLONE_TIMEOUT = 1800 # 30 mins (defined again below, remove one)
 TRUFFLEHOG_TIMEOUT = 1800 # 30 mins for trufflehog scan
 
