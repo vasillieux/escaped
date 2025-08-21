@@ -32,11 +32,13 @@
 
 ### prerequirements 
 - Trufflehog 
-- GH (Github-CLI) 
+- GH (Github-CLI) (https://github.com/cli/cli/blob/trunk/docs/install_linux.md)
     - You need to setup your GH cli before run the program.
 
 Then run with python 3.12 
 - `pip install -r requirements.txt`
+or 
+- `pip install -e .`
 
 ## using GH, to locate the repositories you want to parse. 
 

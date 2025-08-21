@@ -10,19 +10,19 @@ from escaped.config import GITHUB_TOKEN
 SOLIDITY_HEURISTICS = [
     {"name": "Hardcoded Private Key (Hex String in Solidity Context)", "regex": re.compile(r'(?:privateKey|deployerKey|ownerKey|adminKey)\s*[:=]\s*["\'](0x[a-fA-F0-9]{64})["\']', re.IGNORECASE), "severity": "CRITICAL", "type": "SOL_PK_HEX", "target_extensions": [".sol"]},
     {"name": "Mnemonic Phrase (Solidity Context)", "regex": re.compile(r'(?:mnemonic|seedPhrase)\s*[:=]\s*["\'](\w+\s+){11,23}\w+["\']', re.IGNORECASE), "severity": "CRITICAL", "type": "SOL_MNEMONIC", "target_extensions": [".sol"]},
-    {"name": "delegatecall without guard (Basic)", "regex": re.compile(r'\.delegatecall\s*\(([^)]*)\);', re.IGNORECASE), "severity": "CRITICAL", "type": "SOL_DELEGATECALL_UNGUARDED", "target_extensions": [".sol"]},
-    {"name": "selfdestruct usage", "regex": re.compile(r'selfdestruct\s*\(', re.IGNORECASE), "severity": "CRITICAL", "type": "SOL_SELFDESTRUCT", "target_extensions": [".sol"]},
-    {"name": "tx.origin for Auth", "regex": re.compile(r'require\s*\(\s*msg\.sender\s*==\s*tx\.origin\s*\)', re.IGNORECASE), "severity": "CRITICAL", "type": "SOL_TX_ORIGIN_AUTH", "target_extensions": [".sol"]},
-    {"name": "Reentrancy via .call{value}", "regex": re.compile(r'\w+\.call\s*\{value:\s*\w+\s*\}\s*\(\s*""\s*\)', re.IGNORECASE), "severity": "HIGH", "type": "SOL_REENTRANCY_CALL_VALUE", "target_extensions": [".sol"]},
-    {"name": "Timestamp Dependence", "regex": re.compile(r'block\.timestamp', re.IGNORECASE), "severity": "HIGH", "type": "SOL_TIMESTAMP_DEPENDENCE", "target_extensions": [".sol"]},
-    {"name": "Unchecked external call return value (Basic)", "regex": re.compile(r'^\s*(address\([\w\.]+\))\.call\(.*\);', re.MULTILINE | re.IGNORECASE), "severity": "HIGH", "type": "SOL_UNCHECKED_CALL_RETURN", "target_extensions": [".sol"]},
-    {"name": "Assembly Usage (Basic)", "regex": re.compile(r'assembly\s*\{', re.IGNORECASE), "severity": "HIGH", "type": "SOL_ASSEMBLY_USAGE", "target_extensions": [".sol"]},
-    {"name": "ecrecover Usage", "regex": re.compile(r'ecrecover\s*\(', re.IGNORECASE), "severity": "HIGH", "type": "SOL_ECRECOVER_USAGE", "target_extensions": [".sol"]},
-    {"name": "TODO/FIXME/XXX Comments in Solidity", "regex": re.compile(r'//\s*(TODO|FIXME|XXX|HACK)', re.IGNORECASE), "severity": "MEDIUM", "type": "SOL_DEV_COMMENT_TODO", "target_extensions": [".sol"]},
-    {"name": "abi.encodePacked Usage", "regex": re.compile(r'abi\.encodePacked\s*\(', re.IGNORECASE), "severity": "MEDIUM", "type": "SOL_ABI_ENCODEPACKED", "target_extensions": [".sol"]},
-    {"name": "Hardcoded Address (Non-Zero in Solidity)", "regex": re.compile(r'=\s*(0x[a-fA-F0-9]{40})(?!\s*;\s*\/\/\s*zero address)', re.IGNORECASE), "severity": "MEDIUM", "type": "SOL_HARDCODED_ADDRESS", "target_extensions": [".sol"]},
-    {"name": "Oracle Keyword (Solidity Context)", "regex": re.compile(r'oracle|priceFeed|getPrice|latestAnswer|latestRoundData', re.IGNORECASE), "severity": "MEDIUM", "type": "SOL_ORACLE_KEYWORD", "target_extensions": [".sol"]},
-    {"name": "Flash Loan Keyword (Solidity Context)", "regex": re.compile(r'flashLoan|flashMint|onFlashLoan', re.IGNORECASE), "severity": "MEDIUM", "type": "SOL_FLASHLOAN_KEYWORD", "target_extensions": [".sol"]},
+    # {"name": "delegatecall without guard (Basic)", "regex": re.compile(r'\.delegatecall\s*\(([^)]*)\);', re.IGNORECASE), "severity": "CRITICAL", "type": "SOL_DELEGATECALL_UNGUARDED", "target_extensions": [".sol"]},
+    # {"name": "selfdestruct usage", "regex": re.compile(r'selfdestruct\s*\(', re.IGNORECASE), "severity": "CRITICAL", "type": "SOL_SELFDESTRUCT", "target_extensions": [".sol"]},
+    # {"name": "tx.origin for Auth", "regex": re.compile(r'require\s*\(\s*msg\.sender\s*==\s*tx\.origin\s*\)', re.IGNORECASE), "severity": "CRITICAL", "type": "SOL_TX_ORIGIN_AUTH", "target_extensions": [".sol"]},
+    # {"name": "Reentrancy via .call{value}", "regex": re.compile(r'\w+\.call\s*\{value:\s*\w+\s*\}\s*\(\s*""\s*\)', re.IGNORECASE), "severity": "HIGH", "type": "SOL_REENTRANCY_CALL_VALUE", "target_extensions": [".sol"]},
+    # {"name": "Timestamp Dependence", "regex": re.compile(r'block\.timestamp', re.IGNORECASE), "severity": "HIGH", "type": "SOL_TIMESTAMP_DEPENDENCE", "target_extensions": [".sol"]},
+    # {"name": "Unchecked external call return value (Basic)", "regex": re.compile(r'^\s*(address\([\w\.]+\))\.call\(.*\);', re.MULTILINE | re.IGNORECASE), "severity": "HIGH", "type": "SOL_UNCHECKED_CALL_RETURN", "target_extensions": [".sol"]},
+    # {"name": "Assembly Usage (Basic)", "regex": re.compile(r'assembly\s*\{', re.IGNORECASE), "severity": "HIGH", "type": "SOL_ASSEMBLY_USAGE", "target_extensions": [".sol"]},
+    # {"name": "ecrecover Usage", "regex": re.compile(r'ecrecover\s*\(', re.IGNORECASE), "severity": "HIGH", "type": "SOL_ECRECOVER_USAGE", "target_extensions": [".sol"]},
+    # {"name": "TODO/FIXME/XXX Comments in Solidity", "regex": re.compile(r'//\s*(TODO|FIXME|XXX|HACK)', re.IGNORECASE), "severity": "MEDIUM", "type": "SOL_DEV_COMMENT_TODO", "target_extensions": [".sol"]},
+    # {"name": "abi.encodePacked Usage", "regex": re.compile(r'abi\.encodePacked\s*\(', re.IGNORECASE), "severity": "MEDIUM", "type": "SOL_ABI_ENCODEPACKED", "target_extensions": [".sol"]},
+    # {"name": "Hardcoded Address (Non-Zero in Solidity)", "regex": re.compile(r'=\s*(0x[a-fA-F0-9]{40})(?!\s*;\s*\/\/\s*zero address)', re.IGNORECASE), "severity": "MEDIUM", "type": "SOL_HARDCODED_ADDRESS", "target_extensions": [".sol"]},
+    # {"name": "Oracle Keyword (Solidity Context)", "regex": re.compile(r'oracle|priceFeed|getPrice|latestAnswer|latestRoundData', re.IGNORECASE), "severity": "MEDIUM", "type": "SOL_ORACLE_KEYWORD", "target_extensions": [".sol"]},
+    # {"name": "Flash Loan Keyword (Solidity Context)", "regex": re.compile(r'flashLoan|flashMint|onFlashLoan', re.IGNORECASE), "severity": "MEDIUM", "type": "SOL_FLASHLOAN_KEYWORD", "target_extensions": [".sol"]},
 ]
 
 GENERAL_WEB3_HEURISTICS = [
@@ -55,7 +55,34 @@ GENERAL_WEB3_HEURISTICS = [
     {"name": "TODO/FIXME/XXX Comments (General)", "regex": re.compile(r'(#|//|\*)\s*(TODO|FIXME|XXX|HACK)', re.IGNORECASE), "severity": "LOW", "type": "DEV_COMMENT_TODO_GENERAL"},
 ]
 
-ALL_HEURISTICS = SOLIDITY_HEURISTICS + GENERAL_WEB3_HEURISTICS
+MODERN_STACK_HEURISTICS = [
+    # --- AI Services ---
+    {"name": "OpenAI API Key", "regex": re.compile(r'sk-[a-zA-Z0-9]{48}'), "severity": "CRITICAL", "type": "AI_OPENAI_KEY"},
+    {"name": "OpenAI Organization ID", "regex": re.compile(r'org-[a-zA-Z0-9]{24}'), "severity": "LOW", "type": "AI_OPENAI_ORG_ID"},
+    {"name": "Anthropic API Key", "regex": re.compile(r'sk-ant-api03-[a-zA-Z0-9_-]{95}'), "severity": "CRITICAL", "type": "AI_ANTHROPIC_KEY"},
+    {"name": "Cohere API Key", "regex": re.compile(r'[a-zA-Z0-9]{40}'), "severity": "CRITICAL", "type": "AI_COHERE_KEY"}, # Can be noisy, context is key
+    {"name": "OpenRouter API Key", "regex": re.compile(r'sk-or-v1-[a-zA-Z0-9]{64}'), "severity": "CRITICAL", "type": "AI_OPENROUTER_KEY"},
+    {"name": "TogetherAI API Key", "regex": re.compile(r'[a-f0-9]{64}'), "severity": "CRITICAL", "type": "AI_TOGETHERAI_KEY"}, # Can be noisy
+    {"name": "Hugging Face Token", "regex": re.compile(r'hf_[a-zA-Z0-9]{37}'), "severity": "HIGH", "type": "AI_HUGGINGFACE_TOKEN"},
+
+    # --- Cloud & DB ---
+    {"name": "AWS Credentials File Content", "regex": re.compile(r'\[default\]\s*\n\s*aws_access_key_id\s*=\s*[A-Z0-9]{20}\s*\n\s*aws_secret_access_key\s*=\s*[a-zA-Z0-9/+=]{40}', re.MULTILINE), "severity": "CRITICAL", "type": "AWS_CONFIG_FILE", "target_extensions": [".ini", ".conf", ""]}, # Empty string for files named 'credentials'
+    {"name": "PostgreSQL Connection String (extended)", "regex": re.compile(r'postgres(?:ql)?://(?:[\w.-]+:)?[\w.-]+@[\w.-]+(?::\d+)?/[\w.-]+', re.IGNORECASE), "severity": "HIGH", "type": "DB_POSTGRES_CONN_STRING"},
+    {"name": "Redis Password in Config", "regex": re.compile(r'^\s*requirepass\s+([^\s]+)', re.MULTILINE | re.IGNORECASE), "severity": "HIGH", "type": "REDIS_CONFIG_PASSWORD", "target_extensions": [".conf"]},
+    {"name": "ChromaDB/VectorDB API Key Keywords", "regex": re.compile(r'(CHROMA_API_KEY|PINECONE_API_KEY|WEAVIATE_API_KEY)\s*[:=]\s*["\']?([a-zA-Z0-9-]{30,})["\']?', re.IGNORECASE), "severity": "HIGH", "type": "VECTOR_DB_API_KEY", "target_extensions": [".env", ".py", ".js", ".ts", ".yaml"]},
+    
+    # --- INFRA & CI/CD ---
+    {"name": "SSH Private Key (ED25519)", "regex": re.compile(r'-----BEGIN OPENSSH PRIVATE KEY-----'), "severity": "CRITICAL", "type": "SSH_ED25519_KEY"},
+    {"name": "PuTTY Private Key File Header", "regex": re.compile(r'PuTTY-User-Key-File-2: ssh-rsa'), "severity": "CRITICAL", "type": "SSH_PUTTY_KEY", "target_extensions": [".ppk"]},
+    {"name": "PyPI Upload Token", "regex": re.compile(r'pypi-AgEIcHlwaS5vcmc[A-Za-z0-9\-_]{90,}'), "severity": "CRITICAL", "type": "PYPI_UPLOAD_TOKEN"},
+    {"name": "PyPI Config File (.pypirc)", "regex": re.compile(r'\[pypi\]\s*\n\s*username\s*=\s*.*\s*\n\s*password\s*=', re.MULTILINE), "severity": "CRITICAL", "type": "PYPI_CONFIG_FILE", "target_filenames": [".pypirc"]},
+    {"name": "Terraform Cloud/Enterprise Token", "regex": re.compile(r'["\']?[a-zA-Z0-9]{14}\.atlasv1\.[a-zA-Z0-9-]{60,70}["\']?'), "severity": "CRITICAL", "type": "TERRAFORM_TOKEN"},
+    {"name": "Overly Permissive IAM Policy (IaC)", "regex": re.compile(r'["\']Action["\']\s*:\s*["\']\*(?![a-zA-Z])["\'].*\s*["\']Resource["\']\s*:\s*["\']\*["\']'), "severity": "HIGH", "type": "IAC_PERMISSIVE_IAM", "target_extensions": [".tf", ".json", ".yaml", ".yml"]},
+    {"name": "Hardcoded Secret in Dockerfile", "regex": re.compile(r'^\s*ENV\s+(SECRET|PASSWORD|API_KEY|TOKEN)\s*=\s*([^\s]+)', re.MULTILINE | re.IGNORECASE), "severity": "HIGH", "type": "DOCKERFILE_SECRET", "target_filenames": ["Dockerfile"]},
+
+]
+
+ALL_HEURISTICS = SOLIDITY_HEURISTICS + GENERAL_WEB3_HEURISTICS + MODERN_STACK_HEURISTICS
 
 def run_command(command_list, cwd=None, capture_output=True, text=True, check=False, timeout=None):
     print(f"Running command: {' '.join(command_list)} {'in '+cwd if cwd else ''}")

@@ -24,6 +24,8 @@ def get_active_pipelines_count(redis_conn):
 
 
 def submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt"):
+    # TODO save orgs' repos to file
+
     """
     reads org names from a file, and sends them to the crawler queue
     but it does it gently, checking if the system is too busy first.
@@ -216,14 +218,14 @@ def main():
     # running options bellow 
 
     # 1. directly to start analyzer
-    # submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt")
+    #submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt")
 
     # 2. send a github search query to the crawler
     # my_search_query = 'language:Solidity "Ownable.sol" stars:>10'
     # submit_gh_search_to_crawler_limited(search_query=my_search_query, gh_results_limit=20) # small limit for testing
 
     # 3. send a list of specific repos straight to the analyzer
-    submit_direct_repo_list_to_analyzer_limited(repo_list_file="direct_repos_to_analyze.txt")
+    #submit_direct_repo_list_to_analyzer_limited(repo_list_file="direct_repos_to_analyze.txt")
     
     print(f"\n--- submitter script finished (or is still gently submitting) ---")
     print("check worker logs and 'rq info' in another terminal to see what's happening.")

@@ -94,7 +94,7 @@ def discover_repos_from_gh_search_job(gh_search_query, limit=100):
                 'escaped.workers.analyzer.analyze_repository_job',
                 org, repo, job_timeout='3h'
             )
-            enqueued_count +=1
+            enqueued_count += 1
         except ValueError:
             print(f"[Crawler] Skipping invalid repo full name format from search: {full_name}")
             continue

@@ -198,7 +198,6 @@ def extract_dangling_blobs_in_repo(cloned_repo_path, org_name, repo_name):
     but might still be lying around in .git/objects.
     """
     print(f"[analyzer] looking for dangling blobs in {cloned_repo_path}...")
-    # ... (rest of the logic, with more human comments)
     # (Pasting the full refactored function for this one)
     output_base_dir = _get_safe_output_subdir(DANGLING_BLOBS_PATH, org_name, repo_name)
     log_file = os.path.join(output_base_dir, "_dangling_blobs_log.txt")
