@@ -323,7 +323,7 @@ def run_trufflehog(scan_path, org_name, repo_name, scan_type="repo_history"):
             print(f"[analyzer] deep scan: telling trufflehog to scan full history.")
 
     else:
-        trufflehog_cmd = ["trufflehog", "filesystem", "--only-verified", "--print-avg-detector-time", "--include-detectors=all" , scan_path, "--json"]
+        trufflehog_cmd = ["trufflehog", "filesystem", "--only-verified", "--print-avg-detector-time", "--include-detectors=all" , scan_path, "--json", "--no-update"]
     print(f"[Analyzer] Executing: {' '.join(trufflehog_cmd)}")
     try:
         process = subprocess.Popen(trufflehog_cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding='utf-8')
@@ -568,8 +568,7 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
         # ! NOTE i guess trufflehog(repo_1 | repo_2 | repo_3) is the same that trufflehog(repo1) | trufflehog(repo2) | trufflehog(repo3)
         
         # A. trufflehog on the whole git history
-        # run_trufflehog(local_repo_path, org_name, repo_name, scan_type="local_repo")
-        run_analyzers(path=local_repo_path, org_name=org_name, repo_name=repo_name, scan_type="local_repo", enable_trufflehog=enable_trufflehog)
+        run_trufflehog(local_repo_path, org_name, repo_name, scan_type="local_repo")
 
         # B. find deleted files, save them, then scan them
         path_to_restored_files = restore_deleted_files_in_repo(local_repo_path, org_name, repo_name)
