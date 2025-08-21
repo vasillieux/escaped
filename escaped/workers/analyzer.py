@@ -569,7 +569,6 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
             print(f"[Analyzer] Caching repo as processed: {repo_full_name}")
             
             # SADD returns 1 if the element was added, 0 if it was already there.
-            redis_cache_conn.sadd(PROCESSED_REPOS_SET_KEY, repo_full_name)
             cache_key = f"escaped:processed:{repo_full_name}"
             redis_cache_conn.set(cache_key, 1) # dummy val 
 

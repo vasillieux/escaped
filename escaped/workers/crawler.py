@@ -22,7 +22,7 @@ def discover_repos_from_org_list_job(org_names_list):
 
     print(f"[Crawler] Processing organization list: {org_names_list}")
     redis_conn_analyzer = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_ANALYZER)
-    redis_cache_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_CACHE, decode_responses=True)
+    redis_cache_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_CACHE)
     analyzer_q = Queue(ANALYZER_QUEUE_NAME, connection=redis_conn_analyzer)
     
     enqueued_count = 0
