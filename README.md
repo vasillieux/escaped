@@ -1,7 +1,8 @@
+
+# escaped 
+
 ![immg](https://github.com/user-attachments/assets/6c2dd151-ad90-41cf-ba69-60918faa9f31)
 
-
-## Gitsens 
 
 **What is**? Semantic scanner for thousands of (git-) github repositories on leaing sensitive information.
 
@@ -51,9 +52,9 @@ Start Analyzer Worker(s):
 - `rq worker -c config web3_analyzer_queue --url redis://localhost:6379/1`
 
 Submit Initial Jobs:
-- `python gitsens/submit_jobs.py`
+- `python escaped/submit_jobs.py`
 ! Warning. If you're submitting jobs to analyzer directly, specify (populize) file, commonly named `direct_repos_to_analyze.txt`. 
-To check the details, look at the `gitsens/submit_jobs` implementation.
+To check the details, look at the `escaped/submit_jobs` implementation.
 
 ## Installation (Docker)
 
@@ -89,9 +90,10 @@ analysis_output
 ```
 
 ## Constraints 
-- GH api limit 50000 requrests/hour
+- GH api limit 5000 requests/hour
 - Limited heuristics
 - No post-analysis of output data 
+- Only GITHUB (for a while).
 
 ## How to win 
 

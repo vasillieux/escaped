@@ -4,7 +4,7 @@ import os
 import time 
 import random
 
-from gitsens.config import (
+from escaped.config import (
     REDIS_HOST, REDIS_PORT,
     REDIS_DB_CRAWLER, CRAWLER_QUEUE_NAME,
     REDIS_DB_ANALYZER, ANALYZER_QUEUE_NAME, 
@@ -32,7 +32,7 @@ def submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt"):
     # connect to the crawler's queue
     redis_crawler_q_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_CRAWLER)
     crawler_q = Queue(CRAWLER_QUEUE_NAME, connection=redis_crawler_q_conn)
-    
+
     # also need to check the global pipeline counter
     redis_pipeline_counter_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_SEMAPHORE)
 
@@ -86,7 +86,7 @@ def submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt"):
         # enqueue this batch of orgs for the crawler to process
         # the crawler job `discover_repos_from_org_list_job` is designed to take a list of orgs.
         print(f"sending batch of {len(current_batch_of_orgs)} orgs to crawler queue...")
-        job = crawler_q.enqueue('gitsens.workers.crawler.discover_repos_from_org_list_job', 
+        job = crawler_q.enqueue('escaped.workers.crawler.discover_repos_from_org_list_job', 
                                 current_batch_of_orgs, job_timeout='1h') # crawler job gets 1hr
         num_batches_enqueued += 1
         num_orgs_processed_by_submitter += len(current_batch_of_orgs)
@@ -129,7 +129,7 @@ def submit_gh_search_to_crawler_limited(search_query, gh_results_limit=50):
             time.sleep(wait_duration)
     
     print(f"sending github search query to crawler: '{search_query}' (gh limit: {gh_results_limit})")
-    job = crawler_q.enqueue('gitsens.workers.crawler.discover_repos_from_gh_search_job', 
+    job = crawler_q.enqueue('escaped.workers.crawler.discover_repos_from_gh_search_job', 
                             search_query, gh_results_limit, job_timeout='1h')
     print(f"  github search job id: {job.id}")
 
@@ -192,7 +192,7 @@ def submit_direct_repo_list_to_analyzer_limited(repo_list_file="direct_repos_to_
                 org_name, repo_name = full_repo_name.split('/', 1)
                 # send job directly to analyzer
                 job = analyzer_q.enqueue( 
-                    'gitsens.workers.analyzer.analyze_repository_job',
+                    'escaped.workers.analyzer.analyze_repository_job',
                     org_name, repo_name, job_timeout='3h' # analyzer job gets longer timeout
                 )
                 num_repos_enqueued += 1
@@ -216,14 +216,14 @@ def main():
     # running options bellow 
 
     # 1. directly to start analyzer
-    submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt")
+    # submit_org_list_to_crawler_limited(org_list_file="web3_orgs.txt")
 
     # 2. send a github search query to the crawler
     # my_search_query = 'language:Solidity "Ownable.sol" stars:>10'
     # submit_gh_search_to_crawler_limited(search_query=my_search_query, gh_results_limit=20) # small limit for testing
 
     # 3. send a list of specific repos straight to the analyzer
-    # submit_direct_repo_list_to_analyzer_limited(repo_list_file="direct_repos_to_analyze.txt")
+    submit_direct_repo_list_to_analyzer_limited(repo_list_file="direct_repos_to_analyze.txt")
     
     print(f"\n--- submitter script finished (or is still gently submitting) ---")
     print("check worker logs and 'rq info' in another terminal to see what's happening.")

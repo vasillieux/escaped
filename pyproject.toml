@@ -3,11 +3,11 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "gitsens"  
+name = "escaped"  
 version = "0.1.0"  
 description = "Git-sensitive application."  #  
 authors = [
-    {name = "Your Name", email = "hypocycloid@duck.com"}  
+    {name = "Yahor", email = "hypocycloid@duck.com"}  
 ]
 dependencies = [
     "redis",
@@ -16,16 +16,16 @@ dependencies = [
 
 
 [tool.setuptools]
-packages = ["gitsens"] 
+packages = ["escaped"] 
 
 [tool.setuptools.package-dir]
-"gitsens" = "gitsens"  
+"escaped" = "escaped"  
 
 [tool.setuptools.exclude-package-data]
-"gitsens" = ["*.pyc"]  
+"escaped" = ["*.pyc"]  
 
 [tool.setuptools.package-data]  
-"gitsens" = ["*.txt", "*.csv"] 
+"escaped" = ["*.txt", "*.csv"] 
 
 
 [tool.mypy]
@@ -34,7 +34,7 @@ strict = true
 
 [tool.coverage.run]
 branch = true
-source = ["gitsens"]  # Which code to measure coverage on.
+source = ["escaped"] 
 
 [tool.coverage.report]
 fail_under = 80  # Minimum coverage percentage to pass.

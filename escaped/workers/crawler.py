@@ -1,14 +1,14 @@
 import os
 import redis
 from rq import Queue
-import json # For parsing gh search output
+import json 
 
-from gitsens.config import (
+from escaped.config import (
     REDIS_HOST, REDIS_PORT, REDIS_DB_ANALYZER, ANALYZER_QUEUE_NAME, 
     REDIS_DB_CRAWLER, CRAWLER_QUEUE_NAME, 
     MAX_REPOS_PER_ORG
 )
-from gitsens.utils import run_command
+from escaped.utils import run_command
 
 
 def discover_repos_from_org_list_job(org_names_list):
@@ -44,7 +44,7 @@ def discover_repos_from_org_list_job(org_names_list):
                 org, repo = full_name.split('/', 1)
                 print(f"[Crawler] Enqueuing for ANALYSIS: {org}/{repo}")
                 analyzer_q.enqueue(
-                    'gitsens.workers.analyzer.analyze_repository_job',
+                    'escaped.workers.analyzer.analyze_repository_job',
                     org, repo, job_timeout='3h' 
                 )
                 enqueued_count += 1
@@ -91,8 +91,8 @@ def discover_repos_from_gh_search_job(gh_search_query, limit=100):
             org, repo = full_name.split('/', 1)
             print(f"[Crawler] Enqueuing for ANALYSIS: {org}/{repo}")
             analyzer_q.enqueue(
-                'gitsens.workers.analyzer.analyze_repository_job',
-                org, repo, job_timeout='3h' # increased timeout for full pipeline
+                'escaped.workers.analyzer.analyze_repository_job',
+                org, repo, job_timeout='3h'
             )
             enqueued_count +=1
         except ValueError:
