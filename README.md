@@ -1,4 +1,8 @@
-## escaped
+
+# escaped 
+
+![immg](https://github.com/user-attachments/assets/6c2dd151-ad90-41cf-ba69-60918faa9f31)
+
 
 **What is**? Semantic scanner for thousands of (git-) github repositories on leaing sensitive information.
 
@@ -100,3 +104,5 @@ It's a secret. Stay tuned.
 
 Thanks trufflehog for the great security and reconnaissance tool!
 You can find it at - https://github.com/trufflesecurity/trufflehog
+
+P.S: Honestly, I just wanted to get a better understanding of the git
