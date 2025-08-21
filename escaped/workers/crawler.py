@@ -9,7 +9,7 @@ from escaped.config import (
     REDIS_DB_CRAWLER, CRAWLER_QUEUE_NAME, 
     MAX_REPOS_PER_ORG, 
     MAX_REPO_AGE_DAYS, MAX_REPO_SIZE_KB,
-    REDIS_DB_CACHE
+    REDIS_DB_CACHE, PROCESSED_REPOS_SET_KEY
 )
 from escaped.utils import run_command
 
@@ -46,9 +46,11 @@ def discover_repos_from_org_list_job(org_names_list):
 
         for full_name in repo_full_names:
             try:
-                if redis_cache_conn.sismember(PROCESSED_REPOS_SET_KEY, full_name):
+                cache_key = f"escaped:processed:{full_name}"
+                if redis_cache_conn.exists(cache_key):
                     skipped_count += 1
                     continue
+
                 org, repo = full_name.split('/', 1)
 
 
