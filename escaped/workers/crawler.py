@@ -8,7 +8,8 @@ from escaped.config import (
     REDIS_HOST, REDIS_PORT, REDIS_DB_ANALYZER, ANALYZER_QUEUE_NAME, 
     REDIS_DB_CRAWLER, CRAWLER_QUEUE_NAME, 
     MAX_REPOS_PER_ORG, 
-    MAX_REPO_AGE_DAYS, MAX_REPO_SIZE_KB
+    MAX_REPO_AGE_DAYS, MAX_REPO_SIZE_KB,
+    REDIS_DB_CACHE
 )
 from escaped.utils import run_command
 
@@ -21,9 +22,11 @@ def discover_repos_from_org_list_job(org_names_list):
 
     print(f"[Crawler] Processing organization list: {org_names_list}")
     redis_conn_analyzer = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_ANALYZER)
+    redis_cache_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_CACHE, decode_responses=True)
     analyzer_q = Queue(ANALYZER_QUEUE_NAME, connection=redis_conn_analyzer)
     
     enqueued_count = 0
+    skipped_count = 0
     for org_name in org_names_list:
         print(f"[Crawler] Listing repos for organization: {org_name}")
         list_repo_cmd = [
@@ -43,7 +46,11 @@ def discover_repos_from_org_list_job(org_names_list):
 
         for full_name in repo_full_names:
             try:
+                if redis_cache_conn.sismember(PROCESSED_REPOS_SET_KEY, full_name):
+                    skipped_count += 1
+                    continue
                 org, repo = full_name.split('/', 1)
+
 
                 if MAX_REPO_AGE_DAYS > 0 or MAX_REPO_SIZE_KB > 0:
                     view_cmd = ["gh", "repo", "view", full_name, "--json", "diskUsage,pushedAt,isFork"]
