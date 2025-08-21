@@ -15,7 +15,7 @@ MAX_REPO_AGE_DAYS = int(os.getenv("MAX_REPO_AGE_DAYS", 365 * 2)) # 2 years
 MAX_REPO_SIZE_KB = int(os.getenv("MAX_REPO_SIZE_KB", 1024 * 1024)) # 1GB
 DENYLIST_EXTENSIONS = {
     '.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp',
-    '.mp4', '.mov', '.avi', '.mkv', '.webm',
+    '.mp4', '.mo1', '.avi', '.mkv', '.webm',
     '.mp3', '.wav', '.ogg', '.flac',
     '.zip', '.tar', '.gz', '.rar', '.7z',
     '.pdf', '.doc', '.docx', '.xls', '.xlsx', '.ppt', '.pptx',
@@ -23,6 +23,11 @@ DENYLIST_EXTENSIONS = {
     '.pyc', '.pyo',
     '.lockb', '.lock'
 }
+
+# --- cache --- 
+PROCESSED_REPOS_SET_KEY = "escaped:processed_repos"
+PROCESSED_REPOS_CACHE_TTL_SECONDS = int(os.getenv("PROCESSED_REPOS_CACHE_TTL_SECONDS", 86400 * 7)) # 7 days
+REDIS_DB_CACHE = int(os.getenv("REDIS_DB_CACHE", 4))
 
 # --- redis settings for rq ---
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
