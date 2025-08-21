@@ -2,11 +2,13 @@ import os
 import redis
 from rq import Queue
 import json 
+from datetime import datetime, timezone
 
 from escaped.config import (
     REDIS_HOST, REDIS_PORT, REDIS_DB_ANALYZER, ANALYZER_QUEUE_NAME, 
     REDIS_DB_CRAWLER, CRAWLER_QUEUE_NAME, 
-    MAX_REPOS_PER_ORG
+    MAX_REPOS_PER_ORG, 
+    MAX_REPO_AGE_DAYS, MAX_REPO_SIZE_KB
 )
 from escaped.utils import run_command
 
@@ -42,6 +44,39 @@ def discover_repos_from_org_list_job(org_names_list):
         for full_name in repo_full_names:
             try:
                 org, repo = full_name.split('/', 1)
+
+                if MAX_REPO_AGE_DAYS > 0 or MAX_REPO_SIZE_KB > 0:
+                    view_cmd = ["gh", "repo", "view", full_name, "--json", "diskUsage,pushedAt,isFork"]
+                    view_result = run_command(view_cmd)
+                    if view_result and view_result.returncode == 0 and view_result.stdout:
+                        try:
+                            repo_data = json.loads(view_result.stdout)
+                            
+                            # Check age
+                            if MAX_REPO_AGE_DAYS > 0:
+                                pushed_at_str = repo_data.get("pushedAt")
+                                if pushed_at_str:
+                                    pushed_at_dt = datetime.fromisoformat(pushed_at_str.replace("Z", "+00:00"))
+                                    age_days = (datetime.now(timezone.utc) - pushed_at_dt).days
+                                    if age_days > MAX_REPO_AGE_DAYS:
+                                        print(f"[Crawler] skipping old repo: {full_name} (last push {age_days} days ago).")
+                                        continue # Skip to next repo in loop
+                            
+                            # Check size
+                            if MAX_REPO_SIZE_KB > 0:
+                                disk_usage_kb = repo_data.get("diskUsage")
+                                if disk_usage_kb and disk_usage_kb > MAX_REPO_SIZE_KB:
+                                    print(f"[Crawler] skipping large repo: {full_name} ({disk_usage_kb} KB).")
+                                    continue # Skip to next repo in loop
+
+                            # (Optional) Check for forks
+                            # TODO devs can put secrets in their local forks, not in the prod repo
+                        except (json.JSONDecodeError, KeyError):
+                            print(f"[Crawler] warning: could not parse repo metadata for {full_name}.")
+                            # Proceed with enqueueing if metadata check fails
+                    else:
+                        print(f"[Crawler] warning: could not fetch repo metadata for {full_name}. Enqueueing anyway.")
+
                 print(f"[Crawler] Enqueuing for ANALYSIS: {org}/{repo}")
                 analyzer_q.enqueue(
                     'escaped.workers.analyzer.analyze_repository_job',
@@ -55,7 +90,7 @@ def discover_repos_from_org_list_job(org_names_list):
     return f"Crawled {len(org_names_list)} organizations, enqueued {enqueued_count} repos for analysis."
 
 
-def discover_repos_from_gh_search_job(gh_search_query, limit=100):
+def discover_repos_from_gh_search_job(gh_search_query, limit=100):#
 
     """
     uses 'gh search repos' and enqueues found repos for analysis by the Analyzer Worker.
