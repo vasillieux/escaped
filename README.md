@@ -36,11 +36,13 @@
 
 ### prerequirements 
 - Trufflehog 
-- GH (Github-CLI) 
+- GH (Github-CLI) (https://github.com/cli/cli/blob/trunk/docs/install_linux.md)
     - You need to setup your GH cli before run the program.
 
 Then run with python 3.12 
 - `pip install -r requirements.txt`
+or 
+- `pip install -e .`
 
 ## using GH, to locate the repositories you want to parse. 
 
@@ -66,10 +68,16 @@ Start Crawler Worker(s):
 Start Analyzer Worker(s):
 - `rq worker -c escaped.config escaped_analyzer_queue --url redis://localhost:6379/1`
 
-Submit Initial Jobs:
-- `python escaped/submit_jobs.py`
-! Warning. If you're submitting jobs to analyzer directly, specify (populize) file, commonly named `direct_repos_to_analyze.txt`. 
-To check the details, look at the `escaped/submit_jobs` implementation.
+To empty queues:
+- `rq empty escaped_crawler_queue --url redis://localhost:6379/0`
+- `rq empty escaped_analyzer_queue --url redis://localhost:6379/1`
+
+Help menu:
+- `python escaped/submit_jobs.py -h` (to get latest help menu)
+
+Submit jobs with orgmode:
+- `python3 escaped/submit_jobs.py orgs -f your_orgs_file.txt`
+
 
 ## installation (Docker)
 
@@ -85,7 +93,7 @@ volumes:
 
 Check logs 
 
-`docker-compose logs -f crawler_worker`
+`Submit docker-compose logs -f crawler_worker`
 `docker-compose logs -f analyzer_worker`
 
 

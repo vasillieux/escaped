@@ -15,7 +15,10 @@ from escaped.config import (
     MAX_CLONE_ATTEMPTS, CLONE_RETRY_DELAY_SECONDS,
     REDIS_HOST, REDIS_PORT, REDIS_DB_ANALYZER, ANALYZER_QUEUE_NAME, 
     REDIS_DB_SEMAPHORE, GLOBAL_MAX_CONCURRENT_PIPELINES, ACTIVE_PIPELINES_COUNTER_KEY,
-    ANALYZER_REQUEUE_DELAY_SECONDS
+    ANALYZER_REQUEUE_DELAY_SECONDS, 
+
+    SCAN_COMMIT_DEPTH, MAX_FILE_SIZE_TO_SCAN_BYTES, DENYLIST_EXTENSIONS,
+    REDIS_DB_CACHE, PROCESSED_REPOS_SET_KEY, PROCESSED_REPOS_CACHE_TTL_SECONDS
 )
 from escaped.utils import (
     run_command, ALL_HEURISTICS
@@ -123,7 +126,14 @@ def restore_deleted_files_in_repo(cloned_repo_path, org_name, repo_name):
     output_base_dir = _get_safe_output_subdir(RESTORED_FILES_PATH, org_name, repo_name)
     log_file = os.path.join(output_base_dir, "_deleted_files_log.txt") # just for us to see what happened
 
-    rev_list_cmd = ["git", "rev-list", "--all"] # get all commit SHAs
+    if SCAN_COMMIT_DEPTH > 0:
+        print(f"[analyzer] optimization: scanning only the last {SCAN_COMMIT_DEPTH} commits for deleted files.")
+        rev_list_cmd = ["git", "rev-list", f"--max-count={SCAN_COMMIT_DEPTH}", "HEAD"]
+    else:
+        print(f"[analyzer] deep scan: scanning ALL commits for deleted files.")
+        rev_list_cmd = ["git", "rev-list", "--all"]
+
+
     commits_result = run_command(rev_list_cmd, cwd=cloned_repo_path)
     if not (commits_result and hasattr(commits_result, 'returncode') and commits_result.returncode == 0 and commits_result.stdout):
         print(f"[analyzer] couldn't get commit list for {cloned_repo_path}. skipping deleted file restore.")
@@ -198,7 +208,6 @@ def extract_dangling_blobs_in_repo(cloned_repo_path, org_name, repo_name):
     but might still be lying around in .git/objects.
     """
     print(f"[analyzer] looking for dangling blobs in {cloned_repo_path}...")
-    # ... (rest of the logic, with more human comments)
     # (Pasting the full refactored function for this one)
     output_base_dir = _get_safe_output_subdir(DANGLING_BLOBS_PATH, org_name, repo_name)
     log_file = os.path.join(output_base_dir, "_dangling_blobs_log.txt")
@@ -306,6 +315,13 @@ def run_trufflehog(scan_path, org_name, repo_name, scan_type="repo_history"):
         abs_scan_path = os.path.abspath(scan_path)
         file_uri_path = f"file://{abs_scan_path}" 
         trufflehog_cmd = ["trufflehog", "git", file_uri_path, "--json"]
+
+        if SCAN_COMMIT_DEPTH > 0:
+            print(f"[analyzer] optimization: telling trufflehog to scan max depth of {SCAN_COMMIT_DEPTH}.")
+            trufflehog_cmd.append(f"--max-depth={SCAN_COMMIT_DEPTH}")
+        else:
+            print(f"[analyzer] deep scan: telling trufflehog to scan full history.")
+
     else:
         trufflehog_cmd = ["trufflehog", "filesystem", "--only-verified", "--print-avg-detector-time", "--include-detectors=all" , scan_path, "--json"]
     print(f"[Analyzer] Executing: {' '.join(trufflehog_cmd)}")
@@ -357,6 +373,22 @@ def run_custom_analyzer_on_path(base_scan_path, org_name, repo_name, source_type
     for root, _, files in os.walk(base_scan_path):
         for file_name in files:
             file_path_abs = os.path.join(root, file_name)
+
+            try:
+                _, file_extension = os.path.splitext(file_name)
+                if file_extension.lower() in DENYLIST_EXTENSIONS:
+                    # print(f"[analyzer] skipping denylisted extension: {file_name}") # too noisy 
+                    continue
+                
+                if MAX_FILE_SIZE_TO_SCAN_BYTES > 0:
+                    file_size = os.path.getsize(file_path_abs)
+                    if file_size > MAX_FILE_SIZE_TO_SCAN_BYTES:
+                        print(f"[analyzer] skipping large file: {file_name} ({file_size / 1024:.1f} KB)")
+                        continue
+            except OSError:
+                # file might have been removed between os.walk and os.path.getsize
+                continue
+            
             if source_type_label == "dangling_blob": file_path_for_logging = file_name 
             else:
                 try: file_path_for_logging = os.path.relpath(file_path_abs, base_scan_path)
@@ -398,6 +430,8 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
     then cleans up and releases the slot.
     """
     job_start_time = time.time()
+    repo_full_name = f"{org_name}/{repo_name}" # For caching
+
     print(f"[analyzer] hey, new job! for: {org_name}/{repo_name}")
 
     # connect to redis for the global pipeline counter and for re-adding this job to its own queue if needed
@@ -528,10 +562,22 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
             # this is bad, counter might be stuck high. needs monitoring!
             print(f"[analyzer] !!! CRITICAL ERROR !!! failed to release pipeline slot for {org_name}/{repo_name}: {e_redis_cleanup}")
 
-    total_job_time = time.time() - job_start_time
-    if did_analysis_finish_ok:
-        print(f"[analyzer] YAY! all analysis done for {org_name}/{repo_name}. took {total_job_time:.2f}s.")
-        return f"analyzed {org_name}/{repo_name} successfully."
-    else:
-        print(f"[analyzer] analysis for {org_name}/{repo_name} didn't finish right. took {total_job_time:.2f}s.")
-        return f"analysis incomplete/failed for {org_name}/{repo_name}."
+        total_job_time = time.time() - job_start_time
+        if did_analysis_finish_ok:
+            print(f"[analyzer] YAY! all analysis done for {org_name}/{repo_name}. took {total_job_time:.2f}s.")
+            redis_cache_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_CACHE)
+            print(f"[Analyzer] Caching repo as processed: {repo_full_name}")
+            
+            # SADD returns 1 if the element was added, 0 if it was already there.
+            redis_cache_conn.sadd(PROCESSED_REPOS_SET_KEY, repo_full_name)
+            cache_key = f"escaped:processed:{repo_full_name}"
+            redis_cache_conn.set(cache_key, 1) # dummy val 
+
+            if PROCESSED_REPOS_CACHE_TTL_SECONDS > 0:
+                redis_cache_conn.expire(cache_key, PROCESSED_REPOS_CACHE_TTL_SECONDS)
+                print(f"[Analyzer] Repo {repo_full_name} will be eligible for rescan in {PROCESSED_REPOS_CACHE_TTL_SECONDS / 3600:.1f} hours.")
+
+            return f"analyzed {org_name}/{repo_name} successfully."
+        else:
+            print(f"[analyzer] analysis for {org_name}/{repo_name} didn't finish right. took {total_job_time:.2f}s.")
+            return f"analysis incomplete/failed for {org_name}/{repo_name}."

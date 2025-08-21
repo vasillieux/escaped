@@ -3,8 +3,6 @@ from rq import Queue
 import os
 import time 
 import random
-import argparse 
-
 
 from escaped.config import (
     REDIS_HOST, REDIS_PORT,
@@ -216,82 +214,6 @@ def main():
     if not os.path.exists("direct_repos_to_analyze.txt"):
         with open("direct_repos_to_analyze.txt", "w") as f: f.write("# add 'org/repo', one per line\ntrufflesecurity/trufflehog\n")
 
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "mode",
-        choices=['orgs', 'search', 'direct'],
-        help=(
-            "The submission mode:\n"
-            "  orgs    - Read a list of organizations from a file and enqueue their repos via the crawler.\n"
-            "  search  - Submit a single GitHub search query to the crawler.\n"
-            "  direct  - Read a list of specific 'org/repo' from a file and enqueue them directly to the analyzer (uses smart throttling)."
-        )
-    )
-
-    parser.add_argument(
-        "-f", "--file",
-        default="web3_orgs.txt",
-        help=(
-            "Input file for 'orgs' and 'direct' modes.\n"
-            "For 'orgs' mode, this file should contain organization names, one per line.\n"
-            "For 'direct' mode, it should contain 'organization/repository', one per line.\n"
-            "(Default: web3_orgs.txt for 'orgs', direct_repos_to_analyze.txt will be suggested for 'direct')"
-        )
-    )
-
-    parser.add_argument(
-        "-q", "--query",
-        help="The GitHub search query for 'search' mode (e.g., 'language:Solidity stars:>100')."
-    )
-
-    parser.add_argument(
-        "-l", "--limit",
-        type=int,
-        default=100,
-        help="For 'search' mode, the maximum number of repositories to fetch from the search results. (Default: 100)"
-    )
-    parser.add_argument(
-        "-b", "--batch-size",
-        type=int,
-        default=SUBMITTER_BATCH_SIZE,
-        help=f"The number of jobs to enqueue at a time for 'orgs' and 'direct' modes. (Default: {SUBMITTER_BATCH_SIZE})"
-    )
-    parser.add_argument(
-        "-i", "--interval",
-        type=int,
-        default=SUBMITTER_CHECK_INTERVAL_SECONDS,
-        help=f"For 'direct' mode, the interval in seconds to wait between checking system capacity. (Default: {SUBMITTER_CHECK_INTERVAL_SECONDS})"
-    )
-    args = parser.parse_args()
-    
-    if args.mode == 'orgs':
-        print(f"Mode: 'orgs'. Reading organizations from '{args.file}'.")
-        submit_org_list_to_crawler_limited(org_list_file=args.file)
-    
-    elif args.mode == 'search':
-        if not args.query:
-            parser.error("The --query argument is required for 'search' mode.")
-        print(f"Mode: 'search'. Submitting query with limit {args.limit}.")
-        submit_gh_search_to_crawler_limited(search_query=args.query, gh_results_limit=args.limit)
-
-    elif args.mode == 'direct':
-        if args.file == "web3_orgs.txt": 
-            args.file = "direct_repos_to_analyze.txt"
-        
-        # create a dummy file if it doesn't exist to guide the user
-        if not os.path.exists(args.file):
-            with open(args.file, "w") as f:
-                f.write("# Add 'organization/repository_name', one per line\n")
-                f.write("trufflesecurity/trufflehog\n")
-            print(f"Created a dummy file at '{args.file}'. Please populate it and run again.")
-            return
-
-        print(f"Mode: 'direct'. Reading repositories from '{args.file}' with smart throttling.")
-        submit_direct_repo_list_to_analyzer_limited(
-            repo_list_file=args.file,
-        )
-    
 
     # running options bellow 
 
