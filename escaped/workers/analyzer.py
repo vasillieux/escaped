@@ -17,7 +17,8 @@ from escaped.config import (
     REDIS_DB_SEMAPHORE, GLOBAL_MAX_CONCURRENT_PIPELINES, ACTIVE_PIPELINES_COUNTER_KEY,
     ANALYZER_REQUEUE_DELAY_SECONDS, 
 
-    SCAN_COMMIT_DEPTH, MAX_FILE_SIZE_TO_SCAN_BYTES, DENYLIST_EXTENSIONS
+    SCAN_COMMIT_DEPTH, MAX_FILE_SIZE_TO_SCAN_BYTES, DENYLIST_EXTENSIONS,
+    REDIS_DB_CACHE, PROCESSED_REPOS_SET_KEY, PROCESSED_REPOS_CACHE_TTL_SECONDS
 )
 from escaped.utils import (
     run_command, ALL_HEURISTICS
@@ -429,6 +430,8 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
     then cleans up and releases the slot.
     """
     job_start_time = time.time()
+    repo_full_name = f"{org_name}/{repo_name}" # For caching
+
     print(f"[analyzer] hey, new job! for: {org_name}/{repo_name}")
 
     # connect to redis for the global pipeline counter and for re-adding this job to its own queue if needed
@@ -559,10 +562,22 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
             # this is bad, counter might be stuck high. needs monitoring!
             print(f"[analyzer] !!! CRITICAL ERROR !!! failed to release pipeline slot for {org_name}/{repo_name}: {e_redis_cleanup}")
 
-    total_job_time = time.time() - job_start_time
-    if did_analysis_finish_ok:
-        print(f"[analyzer] YAY! all analysis done for {org_name}/{repo_name}. took {total_job_time:.2f}s.")
-        return f"analyzed {org_name}/{repo_name} successfully."
-    else:
-        print(f"[analyzer] analysis for {org_name}/{repo_name} didn't finish right. took {total_job_time:.2f}s.")
-        return f"analysis incomplete/failed for {org_name}/{repo_name}."
+        total_job_time = time.time() - job_start_time
+        if did_analysis_finish_ok:
+            print(f"[analyzer] YAY! all analysis done for {org_name}/{repo_name}. took {total_job_time:.2f}s.")
+            redis_cache_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_CACHE)
+            print(f"[Analyzer] Caching repo as processed: {repo_full_name}")
+            
+            # SADD returns 1 if the element was added, 0 if it was already there.
+            redis_cache_conn.sadd(PROCESSED_REPOS_SET_KEY, repo_full_name)
+            cache_key = f"escaped:processed:{repo_full_name}"
+            redis_cache_conn.set(cache_key, 1) # dummy val 
+
+            if PROCESSED_REPOS_CACHE_TTL_SECONDS > 0:
+                redis_cache_conn.expire(cache_key, PROCESSED_REPOS_CACHE_TTL_SECONDS)
+                print(f"[Analyzer] Repo {repo_full_name} will be eligible for rescan in {PROCESSED_REPOS_CACHE_TTL_SECONDS / 3600:.1f} hours.")
+
+            return f"analyzed {org_name}/{repo_name} successfully."
+        else:
+            print(f"[analyzer] analysis for {org_name}/{repo_name} didn't finish right. took {total_job_time:.2f}s.")
+            return f"analysis incomplete/failed for {org_name}/{repo_name}."
