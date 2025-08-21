@@ -1,4 +1,3 @@
-# gitsens/workers/analyzer.py
 import os
 import shutil
 import json
@@ -8,7 +7,7 @@ import random
 import redis 
 from rq import Queue, get_current_job
 
-from gitsens.config import (
+from escaped.config import (
     GIT_CLONE_PATH, RESTORED_FILES_PATH, DANGLING_BLOBS_PATH,
     TRUFFLEHOG_RESULTS_PATH, CUSTOM_REGEX_RESULTS_PATH,
     REPO_CLONE_TIMEOUT, TRUFFLEHOG_TIMEOUT,
@@ -18,7 +17,7 @@ from gitsens.config import (
     REDIS_DB_SEMAPHORE, GLOBAL_MAX_CONCURRENT_PIPELINES, ACTIVE_PIPELINES_COUNTER_KEY,
     ANALYZER_REQUEUE_DELAY_SECONDS
 )
-from gitsens.utils import (
+from escaped.utils import (
     run_command, ALL_HEURISTICS
 )
 
@@ -328,7 +327,6 @@ def run_trufflehog(scan_path, org_name, repo_name, scan_type="repo_history"):
 def analyze_content_with_heuristics(file_path_for_logging, file_name_for_ext_check, content_str, org_name, repo_name, source_type): 
     findings = []
 
-
     for heuristic in ALL_HEURISTICS:
         apply_heuristic = True
         if "target_extensions" in heuristic:
@@ -382,9 +380,18 @@ def run_custom_analyzer_on_path(base_scan_path, org_name, repo_name, source_type
         with open(custom_log_file, "w", encoding='utf-8') as f: json.dump([], f, indent=2)
 
 
+def run_analyzers(*, path=None, org_name=None, repo_name=None, scan_type=None, enable_trufflehog: bool = True, enable_custom_analyzer: bool = False):
+
+    # TODO: multithreading with semaphore is seems to be good
+    if enable_trufflehog is True:
+        run_trufflehog(path, org_name, repo_name, scan_type=scan_type)
+    if enable_custom_analyzer is True:
+        run_custom_analyzer_on_path(path, org_name, repo_name, source_type_label=scan_type)
+
+
 # TODO: add support for multiple analyzers 
 # i.e: trufflehog, regexps 
-def analyze_repository_job(org_name, repo_name, enabled_analyzers: list = None):
+def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, enable_custom_analyzers: bool = False):
     """
     this is the main job an analyzer worker picks up.
     it tries to get a 'slot' to run, clones the repo, does all the scans,
@@ -420,14 +427,14 @@ def analyze_repository_job(org_name, repo_name, enabled_analyzers: list = None):
             from datetime import timedelta # only import if needed
             analyzer_queue_self.enqueue_in(
                 timedelta(seconds=delay_for_requeue), # use timedelta
-                'gitsens.workers.analyzer.analyze_repository_job',
+                'escaped.workers.analyzer.analyze_repository_job',
                 org_name, repo_name,
                 job_timeout=job_timeout
             )
         except (AttributeError, ImportError): # fallback for older RQ or if timedelta import fails
-             # just put it back at the end of the queue. it'll wait its turn.
+            # just put it back at the end of the queue. it'll wait its turn.
             analyzer_queue_self.enqueue(
-                'gitsens.workers.analyzer.analyze_repository_job',
+                'escaped.workers.analyzer.analyze_repository_job',
                 org_name, repo_name,
                 job_timeout=job_timeout
             )
@@ -456,14 +463,23 @@ def analyze_repository_job(org_name, repo_name, enabled_analyzers: list = None):
         # ! NOTE i guess trufflehog(repo_1 | repo_2 | repo_3) is the same that trufflehog(repo1) | trufflehog(repo2) | trufflehog(repo3)
         
         # A. trufflehog on the whole git history
-        run_trufflehog(local_repo_path, org_name, repo_name, scan_type="local_repo")
+        # run_trufflehog(local_repo_path, org_name, repo_name, scan_type="local_repo")
+        run_analyzers(path=local_repo_path, org_name=org_name, repo_name=repo_name, scan_type="local_repo", enable_trufflehog=enable_trufflehog)
 
         # B. find deleted files, save them, then scan them
         path_to_restored_files = restore_deleted_files_in_repo(local_repo_path, org_name, repo_name)
         # check if anything was actually restored before scanning an empty folder
         if os.path.exists(path_to_restored_files) and any(f.is_file() for f in os.scandir(path_to_restored_files) if not f.name.startswith('_')):
             print(f"[analyzer] found/restored some deleted files at {path_to_restored_files}, scanning them...")
-            run_trufflehog(path_to_restored_files, org_name, repo_name, scan_type="restored_files")
+            run_analyzers(
+                path=path_to_restored_files,
+                org_name=org_name, 
+                repo_name=repo_name, 
+                scan_tupe="restored_files",
+                enable_trufflehog=enable_trufflehog,
+                enable_custom_analyzer=enable_custom_analyzers,
+            )
+            # run_trufflehog(path_to_restored_files, org_name, repo_name, scan_type="restored_files")
             # run_custom_analyzer_on_path(path_to_restored_files, org_name, repo_name, source_type_label="restored_file")
         else:
             print(f"[analyzer] no deleted files were restored (or folder is empty) for {org_name}/{repo_name}.")
@@ -472,7 +488,16 @@ def analyze_repository_job(org_name, repo_name, enabled_analyzers: list = None):
         path_to_dangling_blobs = extract_dangling_blobs_in_repo(local_repo_path, org_name, repo_name)
         if os.path.exists(path_to_dangling_blobs) and any(f.is_file() for f in os.scandir(path_to_dangling_blobs) if not f.name.startswith('_')):
             print(f"[analyzer] found some dangling blobs at {path_to_dangling_blobs}, scanning them...")
-            run_trufflehog(path_to_dangling_blobs, org_name, repo_name, scan_type="dangling_blobs")
+
+            run_analyzers(
+                path=path_to_dangling_blobs,
+                org_name=org_name, 
+                repo_name=repo_name, 
+                scan_tupe="dangling_blobs",
+                enable_trufflehog=enable_trufflehog,
+                enable_custom_analyzer=enable_custom_analyzers,
+            )
+            # run_trufflehog(path_to_dangling_blobs, org_name, repo_name, scan_type="dangling_blobs")
             # run_custom_analyzer_on_path(path_to_dangling_blobs, org_name, repo_name, source_type_label="dangling_blob")
         else:
             print(f"[analyzer] no dangling blobs found (or folder is empty) for {org_name}/{repo_name}.")

@@ -4,7 +4,7 @@ import os
 # how many full analysis pipelines can run at once (cloning + all analysis)
 GLOBAL_MAX_CONCURRENT_PIPELINES = int(os.getenv("GLOBAL_MAX_CONCURRENT_PIPELINES", 10)) 
 # redis key for tracking active pipelines
-ACTIVE_PIPELINES_COUNTER_KEY = "gitsens:active_pipelines"
+ACTIVE_PIPELINES_COUNTER_KEY = "escaped:active_pipelines"
 # how long an analyzer job waits if all pipelines are busy, before trying again
 ANALYZER_REQUEUE_DELAY_SECONDS = int(os.getenv("ANALYZER_REQUEUE_DELAY_SECONDS", 120)) 
 

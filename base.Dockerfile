@@ -41,8 +41,8 @@ COPY . .
 # COPY .py ./
 
 # just for fun
-RUN chmod +x gitsens/*.py 
-RUN chmod +x gitsens/workers/*.py
+RUN chmod +x escaped/*.py 
+RUN chmod +x escaped/workers/*.py
 
 # Create output directories (though volumes will likely manage them)
 RUN mkdir -p /app/analysis_output/cloned_repos \
