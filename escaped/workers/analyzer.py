@@ -599,6 +599,8 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
         print(f"[analyzer] !!! BIG PROBLEM !!! unexpected error during main analysis of {org_name}/{repo_name}: {e_big_job_error}")
         raise
     finally:
+
+        total_job_time = time.time() - job_start_time
         if local_repo_path: 
             if os.path.exists(local_repo_path):
                 shutil.rmtree(local_repo_path, ignore_errors=True) # ignore_errors is safer
@@ -611,7 +613,8 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
             
             # SADD returns 1 if the element was added, 0 if it was already there.
             cache_key = f"escaped:processed:{repo_full_name}"
-            redis_cache_conn.set(cache_key, 1) # dummy val 
+            cmd = redis_cache_conn.set(cache_key, 1) # dummy val 
+            print(f"Cached answer: {cmd}")
 
             if PROCESSED_REPOS_CACHE_TTL_SECONDS > 0:
                 redis_cache_conn.expire(cache_key, PROCESSED_REPOS_CACHE_TTL_SECONDS)
@@ -628,7 +631,6 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
             # this is bad, counter might be stuck high. needs monitoring!
             print(f"[analyzer] !!! CRITICAL ERROR !!! failed to release pipeline slot for {org_name}/{repo_name}: {e_redis_cleanup}")
 
-        total_job_time = time.time() - job_start_time
         if did_analysis_finish_ok:
             return f"analyzed {org_name}/{repo_name} successfully."
         else:
