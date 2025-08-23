@@ -559,6 +559,7 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
     did_analysis_finish_ok = False
     try:
         # --- 1. clone the repo (this has retries built in) ---
+        # TODO: the best is separated queue for cloning
         local_repo_path = clone_repo_with_retries(org_name, repo_name)
         
         if not local_repo_path:
@@ -592,19 +593,33 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
         else:
             print(f"[analyzer] no dangling blobs found (or folder is empty) for {org_name}/{repo_name}.")
 
-        # D. scan the current files in the cloned repo (not just history/deleted)
-        print(f"[analyzer] scanning current files in the cloned repo at {local_repo_path}...")
-        # run_custom_analyzer_on_path(local_repo_path, org_name, repo_name, source_type_label="cloned_repo_current_fs")
-        
         did_analysis_finish_ok = True # if we made it here, all main steps were attempted
 
     except Exception as e_big_job_error:
         print(f"[analyzer] !!! BIG PROBLEM !!! unexpected error during main analysis of {org_name}/{repo_name}: {e_big_job_error}")
         raise
     finally:
-        if local_repo_path and os.path.exists(local_repo_path):
+
+        total_job_time = time.time() - job_start_time
+        if local_repo_path: 
+            if os.path.exists(local_repo_path):
+                shutil.rmtree(local_repo_path, ignore_errors=True) # ignore_errors is safer
+
             print(f"[analyzer] cleaning up cloned repo folder: {local_repo_path}")
-            shutil.rmtree(local_repo_path, ignore_errors=True) # ignore_errors is safer
+
+            print(f"[analyzer] YAY! all analysis done for {org_name}/{repo_name}. took {total_job_time:.2f}s.")
+            redis_cache_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_CACHE)
+            print(f"[Analyzer] Caching repo as processed: {repo_full_name}")
+            
+            # SADD returns 1 if the element was added, 0 if it was already there.
+            cache_key = f"escaped:processed:{repo_full_name}"
+            cmd = redis_cache_conn.set(cache_key, 1) # dummy val 
+            print(f"Cached answer: {cmd}")
+
+            if PROCESSED_REPOS_CACHE_TTL_SECONDS > 0:
+                redis_cache_conn.expire(cache_key, PROCESSED_REPOS_CACHE_TTL_SECONDS)
+                print(f"[Analyzer] Repo {repo_full_name} will be eligible for rescan in {PROCESSED_REPOS_CACHE_TTL_SECONDS / 3600:.1f} hours.")
+
         
         # release the pipeline slot by decrementing the counter
         try:
@@ -616,20 +631,7 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
             # this is bad, counter might be stuck high. needs monitoring!
             print(f"[analyzer] !!! CRITICAL ERROR !!! failed to release pipeline slot for {org_name}/{repo_name}: {e_redis_cleanup}")
 
-        total_job_time = time.time() - job_start_time
         if did_analysis_finish_ok:
-            print(f"[analyzer] YAY! all analysis done for {org_name}/{repo_name}. took {total_job_time:.2f}s.")
-            redis_cache_conn = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB_CACHE)
-            print(f"[Analyzer] Caching repo as processed: {repo_full_name}")
-            
-            # SADD returns 1 if the element was added, 0 if it was already there.
-            cache_key = f"escaped:processed:{repo_full_name}"
-            redis_cache_conn.set(cache_key, 1) # dummy val 
-
-            if PROCESSED_REPOS_CACHE_TTL_SECONDS > 0:
-                redis_cache_conn.expire(cache_key, PROCESSED_REPOS_CACHE_TTL_SECONDS)
-                print(f"[Analyzer] Repo {repo_full_name} will be eligible for rescan in {PROCESSED_REPOS_CACHE_TTL_SECONDS / 3600:.1f} hours.")
-
             return f"analyzed {org_name}/{repo_name} successfully."
         else:
             print(f"[analyzer] analysis for {org_name}/{repo_name} didn't finish right. took {total_job_time:.2f}s.")

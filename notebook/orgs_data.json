@@ -1,0 +1,1235 @@
+[
+  {
+    "organization_name": "LLC",
+    "total_public_repos": 12,
+    "total_stars_top_10_repos": 1041,
+    "top_10_popular_repos": [
+      {
+        "name": "LocalizeLimbusCompany",
+        "url": "https://github.com/LocalizeLimbusCompany/LocalizeLimbusCompany",
+        "description": "边狱公司中文本地化自定义语言包 | Limbus Company Chinese L10N custom language pack",
+        "stars": 792,
+        "forks": 79,
+        "commit_count": 59,
+        "primary_language": null,
+        "language_proportions": {},
+        "last_commit": {
+          "hash": "aecc8d9aa4914a0ed7aa46e3c62087197f9b2a39",
+          "date": "2025-08-21T13:12:41Z"
+        },
+        "branch_count": 4,
+        "last_activity_at": "2025-08-21T13:12:45Z"
+      },
+      {
+        "name": "LLC_MOD_Toolbox",
+        "url": "https://github.com/LocalizeLimbusCompany/LLC_MOD_Toolbox",
+        "description": "模组安装程序",
+        "stars": 213,
+        "forks": 31,
+        "commit_count": 60,
+        "primary_language": "C#",
+        "language_proportions": {
+          "C#": "100.0%"
+        },
+        "last_commit": {
+          "hash": "09400e56cf3f53298db9ff95a28e01523406baa8",
+          "date": "2025-06-14T15:54:49Z"
+        },
+        "branch_count": 2,
+        "last_activity_at": "2025-06-21T14:30:16Z"
+      },
+      {
+        "name": "LLC_ChineseFontAsset",
+        "url": "https://github.com/LocalizeLimbusCompany/LLC_ChineseFontAsset",
+        "description": "LLC使用的中文TextMeshPro字体资源，从思源黑体创建",
+        "stars": 19,
+        "forks": 8,
+        "commit_count": 1,
+        "primary_language": "PowerShell",
+        "language_proportions": {
+          "PowerShell": "100.0%"
+        },
+        "last_commit": {
+          "hash": "c36d560135ffc0bc27408f3ff4037dd99a7f40e5",
+          "date": "2025-02-21T17:25:25Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-02-21T17:30:54Z"
+      },
+      {
+        "name": "LLC_Release",
+        "url": "https://github.com/LocalizeLimbusCompany/LLC_Release",
+        "description": "汉化文本资源 & 其自动化",
+        "stars": 13,
+        "forks": 4,
+        "commit_count": 154,
+        "primary_language": "PowerShell",
+        "language_proportions": {
+          "PowerShell": "100.0%"
+        },
+        "last_commit": {
+          "hash": "b25bb64c686647f44383a15dff4b831c8e961ce9",
+          "date": "2025-04-03T14:47:20Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-04-03T14:48:56Z"
+      },
+      {
+        "name": "LLC_Wiki",
+        "url": "https://github.com/LocalizeLimbusCompany/LLC_Wiki",
+        "description": "零协会文档系统。使用Docusaurus3构建",
+        "stars": 3,
+        "forks": 1,
+        "commit_count": 382,
+        "primary_language": "JavaScript",
+        "language_proportions": {
+          "JavaScript": "75.65%",
+          "CSS": "24.35%"
+        },
+        "last_commit": {
+          "hash": "301fa6c1fea45d6a0ab12164009dbac512f4043d",
+          "date": "2025-02-10T05:25:59Z"
+        },
+        "branch_count": 12,
+        "last_activity_at": "2025-02-10T05:27:04Z"
+      },
+      {
+        "name": "LLC_GAME_V1.1.0_Raw",
+        "url": "https://github.com/LocalizeLimbusCompany/LLC_GAME_V1.1.0_Raw",
+        "description": "关于边狱公司游戏未加密版本的存档",
+        "stars": 1,
+        "forks": 0,
+        "commit_count": 131,
+        "primary_language": "C#",
+        "language_proportions": {
+          "C#": "100.0%"
+        },
+        "last_commit": {
+          "hash": "bf3040f98727c842da87544992c954b4801236ab",
+          "date": "2023-03-31T18:35:41Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2023-03-31T18:35:41Z"
+      },
+      {
+        "name": "LLC_RTCL",
+        "url": "https://github.com/LocalizeLimbusCompany/LLC_RTCL",
+        "description": "RunTimeCreateLocalize",
+        "stars": 0,
+        "forks": 1,
+        "commit_count": 1,
+        "primary_language": "C#",
+        "language_proportions": {
+          "C#": "100.0%"
+        },
+        "last_commit": {
+          "hash": "29faaf9ad03c3da2964549fbd6a4d964ddc0f5f8",
+          "date": "2025-01-08T13:28:59Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-01-08T13:41:53Z"
+      },
+      {
+        "name": "Paratranz_Util_Cache",
+        "url": "https://github.com/LocalizeLimbusCompany/Paratranz_Util_Cache",
+        "description": null,
+        "stars": 0,
+        "forks": 0,
+        "commit_count": 1,
+        "primary_language": null,
+        "language_proportions": {},
+        "last_commit": {
+          "hash": "697295274f02fe3a592253532f76a6c95854d60a",
+          "date": "2025-04-17T21:39:23Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-04-18T16:59:25Z"
+      },
+      {
+        "name": "Paratranz_Util",
+        "url": "https://github.com/LocalizeLimbusCompany/Paratranz_Util",
+        "description": "LLC script for Paratranz",
+        "stars": 0,
+        "forks": 0,
+        "commit_count": 1,
+        "primary_language": "C#",
+        "language_proportions": {
+          "C#": "97.33%",
+          "PowerShell": "2.67%"
+        },
+        "last_commit": {
+          "hash": "2449364de541dd011fcb54dad1ca740764cb53af",
+          "date": "2025-04-18T16:52:01Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-04-18T16:59:58Z"
+      },
+      {
+        "name": ".github",
+        "url": "https://github.com/LocalizeLimbusCompany/.github",
+        "description": null,
+        "stars": 0,
+        "forks": 0,
+        "commit_count": 8,
+        "primary_language": null,
+        "language_proportions": {},
+        "last_commit": {
+          "hash": "bba334f687bd30d392f8860bcf925958d620bbd9",
+          "date": "2025-04-17T15:08:33Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-04-17T15:08:33Z"
+      }
+    ],
+    "total_commits_top_10_repos": 798
+  },
+  {
+    "organization_name": "Radian LLC",
+    "total_public_repos": 101,
+    "total_stars_top_10_repos": 9904,
+    "top_10_popular_repos": [
+      {
+        "name": "straight.el",
+        "url": "https://github.com/radian-software/straight.el",
+        "description": "🍀 Next-generation, purely functional package manager for the Emacs hacker.",
+        "stars": 2883,
+        "forks": 164,
+        "commit_count": 1156,
+        "primary_language": "Emacs Lisp",
+        "language_proportions": {
+          "Emacs Lisp": "97.05%",
+          "Python": "1.55%",
+          "Makefile": "0.71%",
+          "Shell": "0.66%",
+          "Dockerfile": "0.03%"
+        },
+        "last_commit": {
+          "hash": "b7da472452615dc44b4ce76c64a059d6db3b7017",
+          "date": "2025-07-01T20:41:25Z"
+        },
+        "branch_count": 17,
+        "last_activity_at": "2025-08-21T22:34:27Z"
+      },
+      {
+        "name": "TerrariaClone",
+        "url": "https://github.com/radian-software/TerrariaClone",
+        "description": "🔥 An incomprehensible hellscape of spaghetti code.",
+        "stars": 1801,
+        "forks": 136,
+        "commit_count": 24,
+        "primary_language": "Java",
+        "language_proportions": {
+          "Java": "87.67%",
+          "Python": "12.33%"
+        },
+        "last_commit": {
+          "hash": "69b7ca0c61a86261f73a7a1df6b97c9b063bb55f",
+          "date": "2022-05-08T01:34:06Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2023-06-22T14:37:05Z"
+      },
+      {
+        "name": "riju",
+        "url": "https://github.com/radian-software/riju",
+        "description": "⚡ Extremely fast online playground for every programming language.",
+        "stars": 1699,
+        "forks": 204,
+        "commit_count": 1086,
+        "primary_language": "JavaScript",
+        "language_proportions": {
+          "JavaScript": "54.47%",
+          "Go": "14.41%",
+          "Shell": "10.25%",
+          "HCL": "5.95%",
+          "Python": "5.41%",
+          "Makefile": "4.4%",
+          "C": "2.09%",
+          "EJS": "1.85%",
+          "Dockerfile": "0.96%",
+          "CSS": "0.23%"
+        },
+        "last_commit": {
+          "hash": "2fce43abe80c8e3354bf4cf144a46278c622f1fe",
+          "date": "2025-08-06T22:31:10Z"
+        },
+        "branch_count": 33,
+        "last_activity_at": "2025-08-06T22:31:12Z"
+      },
+      {
+        "name": "selectrum",
+        "url": "https://github.com/radian-software/selectrum",
+        "description": "🔔 Better solution for incremental narrowing in Emacs.",
+        "stars": 731,
+        "forks": 33,
+        "commit_count": 625,
+        "primary_language": "Emacs Lisp",
+        "language_proportions": {
+          "Emacs Lisp": "97.26%",
+          "Makefile": "1.44%",
+          "Shell": "1.19%",
+          "Dockerfile": "0.1%"
+        },
+        "last_commit": {
+          "hash": "284523cf9ab724bb5e73b62e6e80d5a8dc01f535",
+          "date": "2022-11-27T05:30:06Z"
+        },
+        "branch_count": 2,
+        "last_activity_at": "2022-11-27T05:30:07Z"
+      },
+      {
+        "name": "apheleia",
+        "url": "https://github.com/radian-software/apheleia",
+        "description": "🌷 Run code formatter on buffer contents without moving point, using RCS patches and dynamic programming.",
+        "stars": 679,
+        "forks": 92,
+        "commit_count": 314,
+        "primary_language": "Emacs Lisp",
+        "language_proportions": {
+          "Emacs Lisp": "67.23%",
+          "Shell": "10.78%",
+          "CMake": "3.33%",
+          "Python": "2.77%",
+          "Makefile": "2.24%",
+          "Ruby": "1.32%",
+          "Assembly": "1.0%",
+          "Clojure": "0.94%",
+          "JavaScript": "0.88%",
+          "Raku": "0.78%"
+        },
+        "last_commit": {
+          "hash": "f1d36031fc162f541f77d4f6c6c0fd6197aba077",
+          "date": "2025-08-07T23:20:59Z"
+        },
+        "branch_count": 4,
+        "last_activity_at": "2025-08-07T23:20:59Z"
+      },
+      {
+        "name": "prescient.el",
+        "url": "https://github.com/radian-software/prescient.el",
+        "description": "☄️ Simple but effective sorting and filtering for Emacs.",
+        "stars": 674,
+        "forks": 26,
+        "commit_count": 213,
+        "primary_language": "Emacs Lisp",
+        "language_proportions": {
+          "Emacs Lisp": "96.98%",
+          "Shell": "1.49%",
+          "Makefile": "1.39%",
+          "Dockerfile": "0.15%"
+        },
+        "last_commit": {
+          "hash": "87e2d2f2ddf24f591a5f70cc90d2afb4537caa18",
+          "date": "2025-08-16T00:19:07Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-08-16T00:19:27Z"
+      },
+      {
+        "name": "radian",
+        "url": "https://github.com/radian-software/radian",
+        "description": "🍉 Dotfiles that marry elegance and practicality.",
+        "stars": 510,
+        "forks": 48,
+        "commit_count": 2089,
+        "primary_language": "Emacs Lisp",
+        "language_proportions": {
+          "Emacs Lisp": "85.38%",
+          "Shell": "13.47%",
+          "Makefile": "0.76%",
+          "Python": "0.27%",
+          "Dockerfile": "0.12%"
+        },
+        "last_commit": {
+          "hash": "b480440b7c8c14d258722882f2b194764c38d7e9",
+          "date": "2025-08-21T23:12:49Z"
+        },
+        "branch_count": 9,
+        "last_activity_at": "2025-08-21T23:12:50Z"
+      },
+      {
+        "name": "ctrlf",
+        "url": "https://github.com/radian-software/ctrlf",
+        "description": "⌨️ Emacs finally learns how to ctrl+F.",
+        "stars": 365,
+        "forks": 22,
+        "commit_count": 148,
+        "primary_language": "Emacs Lisp",
+        "language_proportions": {
+          "Emacs Lisp": "94.13%",
+          "Makefile": "3.41%",
+          "Shell": "2.21%",
+          "Dockerfile": "0.25%"
+        },
+        "last_commit": {
+          "hash": "9b4cf6c79a961f2bfbb949805aa300fcf1eb40a6",
+          "date": "2022-11-12T03:40:32Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2022-11-12T03:40:55Z"
+      },
+      {
+        "name": "python-in-a-box",
+        "url": "https://github.com/radian-software/python-in-a-box",
+        "description": "Interactive online Python REPL in 30 lines of JavaScript.",
+        "stars": 297,
+        "forks": 37,
+        "commit_count": 30,
+        "primary_language": "HTML",
+        "language_proportions": {
+          "HTML": "53.38%",
+          "JavaScript": "23.65%",
+          "Dockerfile": "22.97%"
+        },
+        "last_commit": {
+          "hash": "ed65d5911f5039729256d57c6a7226e9496451c2",
+          "date": "2023-06-04T02:03:12Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2023-06-04T02:03:26Z"
+      },
+      {
+        "name": "el-patch",
+        "url": "https://github.com/radian-software/el-patch",
+        "description": "✨ Future-proof your Emacs Lisp customizations!",
+        "stars": 265,
+        "forks": 14,
+        "commit_count": 220,
+        "primary_language": "Emacs Lisp",
+        "language_proportions": {
+          "Emacs Lisp": "95.65%",
+          "Makefile": "2.97%",
+          "Shell": "1.19%",
+          "Dockerfile": "0.18%"
+        },
+        "last_commit": {
+          "hash": "5adb7097d0ff3d9e004a8bb07c0b25f7ee20ba8a",
+          "date": "2025-08-16T00:21:48Z"
+        },
+        "branch_count": 2,
+        "last_activity_at": "2025-08-16T00:22:05Z"
+      }
+    ],
+    "total_commits_top_10_repos": 5905
+  },
+  {
+    "organization_name": "Petoi LLC",
+    "total_public_repos": 13,
+    "total_stars_top_10_repos": 5766,
+    "top_10_popular_repos": [
+      {
+        "name": "OpenCat-Quadruped-Robot",
+        "url": "https://github.com/PetoiCamp/OpenCat-Quadruped-Robot",
+        "description": "An open source quadruped robot pet framework for developing Boston Dynamics-style four-legged robots that are perfect for STEM, coding & robotics education, IoT robotics applications, AI-enhanced robotics application services, research, and DIY robotics kit development. ",
+        "stars": 4133,
+        "forks": 497,
+        "commit_count": 906,
+        "primary_language": "C++",
+        "language_proportions": {
+          "C++": "45.05%",
+          "Python": "28.93%",
+          "C": "26.01%"
+        },
+        "last_commit": {
+          "hash": "3ba34bb5f1819bac09e99d28c99a2d15ea108329",
+          "date": "2025-08-13T18:00:48Z"
+        },
+        "branch_count": 8,
+        "last_activity_at": "2025-08-13T18:00:53Z"
+      },
+      {
+        "name": "OpenCat-Old",
+        "url": "https://github.com/PetoiCamp/OpenCat-Old",
+        "description": "A programmable and highly maneuverable robotic cat for STEM education and AI-enhanced services.",
+        "stars": 1370,
+        "forks": 361,
+        "commit_count": 130,
+        "primary_language": "C++",
+        "language_proportions": {
+          "C++": "84.99%",
+          "C": "11.33%",
+          "Python": "3.68%"
+        },
+        "last_commit": {
+          "hash": "435fbf8a2f3b6b867ed8002c40ed958e1714f138",
+          "date": "2022-10-10T07:05:25Z"
+        },
+        "branch_count": 5,
+        "last_activity_at": "2022-10-10T07:05:25Z"
+      },
+      {
+        "name": "OpenCatEsp32-Quadruped-Robot",
+        "url": "https://github.com/PetoiCamp/OpenCatEsp32-Quadruped-Robot",
+        "description": "An ESP32-based open source quadruped robot pet framework for developing Boston Dynamics-style four-legged robots that are perfect for STEM, coding & robotics education, IoT robotics applications, AI-enhanced robotics application services, research, and DIY robotics kit development.",
+        "stars": 132,
+        "forks": 48,
+        "commit_count": 431,
+        "primary_language": "C++",
+        "language_proportions": {
+          "C++": "43.57%",
+          "C": "41.74%",
+          "JavaScript": "7.69%",
+          "HTML": "5.89%",
+          "CSS": "1.1%"
+        },
+        "last_commit": {
+          "hash": "cad485a4684756ae8c95c11660d20b4638f33747",
+          "date": "2025-08-18T02:00:47Z"
+        },
+        "branch_count": 15,
+        "last_activity_at": "2025-08-22T08:15:03Z"
+      },
+      {
+        "name": "NonCodeFiles",
+        "url": "https://github.com/PetoiCamp/NonCodeFiles",
+        "description": "Moved the images from OpenCat repo to reduce its size.",
+        "stars": 55,
+        "forks": 23,
+        "commit_count": 104,
+        "primary_language": "OpenSCAD",
+        "language_proportions": {
+          "OpenSCAD": "100.0%"
+        },
+        "last_commit": {
+          "hash": "d467ed3a239a0c5b5c64e847bec4fa64851da736",
+          "date": "2025-06-18T14:39:23Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-06-18T14:39:28Z"
+      },
+      {
+        "name": "PetoiControllerQt",
+        "url": "https://github.com/PetoiCamp/PetoiControllerQt",
+        "description": "Connect and communicate with Bittle through serial with Qt 5",
+        "stars": 26,
+        "forks": 10,
+        "commit_count": 41,
+        "primary_language": "C++",
+        "language_proportions": {
+          "C++": "94.79%",
+          "C": "4.62%",
+          "QMake": "0.48%",
+          "Shell": "0.11%"
+        },
+        "last_commit": {
+          "hash": "af2435888b5a16453da24699a908466071aada9c",
+          "date": "2021-07-21T00:01:44Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2021-07-21T00:01:58Z"
+      },
+      {
+        "name": "ros_opencat",
+        "url": "https://github.com/PetoiCamp/ros_opencat",
+        "description": "control opencat robots using ROS",
+        "stars": 22,
+        "forks": 8,
+        "commit_count": 37,
+        "primary_language": "CMake",
+        "language_proportions": {
+          "CMake": "69.94%",
+          "C++": "21.66%",
+          "Python": "7.61%",
+          "Dockerfile": "0.79%"
+        },
+        "last_commit": {
+          "hash": "85962928970ee47f38d53cad56f8e304863a87f5",
+          "date": "2025-03-13T03:06:24Z"
+        },
+        "branch_count": 2,
+        "last_activity_at": "2025-03-13T03:06:29Z"
+      },
+      {
+        "name": "UI_OpenCat",
+        "url": "https://github.com/PetoiCamp/UI_OpenCat",
+        "description": "User interface for OpenCat",
+        "stars": 11,
+        "forks": 7,
+        "commit_count": 4,
+        "primary_language": "Processing",
+        "language_proportions": {
+          "Processing": "100.0%"
+        },
+        "last_commit": {
+          "hash": "d77aaeb50e88c960759dcd7fef107c2381e383d7",
+          "date": "2020-09-10T04:44:33Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2020-09-10T04:44:35Z"
+      },
+      {
+        "name": "BallTracking",
+        "url": "https://github.com/PetoiCamp/BallTracking",
+        "description": "This is a simple demo to use the intelligent camera module on Bittle",
+        "stars": 9,
+        "forks": 6,
+        "commit_count": 12,
+        "primary_language": "C++",
+        "language_proportions": {
+          "C++": "55.59%",
+          "C": "44.41%"
+        },
+        "last_commit": {
+          "hash": "3e813a5713a365c88553c1436d9bbd51bdbfdf54",
+          "date": "2022-03-09T08:35:13Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2022-03-09T08:35:16Z"
+      },
+      {
+        "name": "OpenCat-Imitation",
+        "url": "https://github.com/PetoiCamp/OpenCat-Imitation",
+        "description": "Let OpenCat robot follow your posture.",
+        "stars": 5,
+        "forks": 2,
+        "commit_count": 17,
+        "primary_language": "Python",
+        "language_proportions": {
+          "Python": "99.92%",
+          "Shell": "0.08%"
+        },
+        "last_commit": {
+          "hash": "322002d83aa4238e01c4ce796968f7f2dfa04f25",
+          "date": "2024-03-14T12:38:32Z"
+        },
+        "branch_count": 2,
+        "last_activity_at": "2024-03-14T12:38:35Z"
+      },
+      {
+        "name": "ESP32_Microbit_Controller",
+        "url": "https://github.com/PetoiCamp/ESP32_Microbit_Controller",
+        "description": "Establish the Bluetooth connection between ESP32 and micro:bit",
+        "stars": 3,
+        "forks": 0,
+        "commit_count": 33,
+        "primary_language": "C",
+        "language_proportions": {
+          "C": "53.89%",
+          "C++": "45.45%",
+          "JavaScript": "0.33%",
+          "Python": "0.33%"
+        },
+        "last_commit": {
+          "hash": "a4e1c78b50675ba3a63c811a14b832f02b283ed7",
+          "date": "2025-04-22T07:14:06Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-04-22T07:14:12Z"
+      }
+    ],
+    "total_commits_top_10_repos": 1715
+  },
+  {
+    "organization_name": "Blockchain Valley",
+    "total_public_repos": 58,
+    "total_stars_top_10_repos": 8,
+    "top_10_popular_repos": [
+      {
+        "name": "DCR",
+        "url": "https://github.com/Block-Chain-Valley/DCR",
+        "description": "Decentralized Copyright",
+        "stars": 2,
+        "forks": 0,
+        "commit_count": 8,
+        "primary_language": "JavaScript",
+        "language_proportions": {
+          "JavaScript": "62.55%",
+          "CSS": "35.04%",
+          "TypeScript": "2.42%"
+        },
+        "last_commit": {
+          "hash": "36fda240eb606476a1b20b6dcd616765be9d92e4",
+          "date": "2023-03-09T14:59:47Z"
+        },
+        "branch_count": 4,
+        "last_activity_at": "2023-03-09T14:59:48Z"
+      },
+      {
+        "name": "bv-blog",
+        "url": "https://github.com/Block-Chain-Valley/bv-blog",
+        "description": "블록체인 밸리 기술 블로그 🧑‍💻🌐",
+        "stars": 1,
+        "forks": 0,
+        "commit_count": 32,
+        "primary_language": "TypeScript",
+        "language_proportions": {
+          "TypeScript": "96.05%",
+          "JavaScript": "2.85%",
+          "CSS": "1.11%"
+        },
+        "last_commit": {
+          "hash": "33a0e7f011a75a16ee25b8b24c81f48b5b9f8f4c",
+          "date": "2024-03-18T16:37:20Z"
+        },
+        "branch_count": 3,
+        "last_activity_at": "2024-03-18T16:50:14Z"
+      },
+      {
+        "name": "BV-2024-1-Dashboard-HW",
+        "url": "https://github.com/Block-Chain-Valley/BV-2024-1-Dashboard-HW",
+        "description": "[24-1] 대시보드 중간 프로젝트 과제 🏡",
+        "stars": 1,
+        "forks": 1,
+        "commit_count": 6,
+        "primary_language": "TypeScript",
+        "language_proportions": {
+          "TypeScript": "83.32%",
+          "SCSS": "12.98%",
+          "JavaScript": "2.41%",
+          "Shell": "1.29%"
+        },
+        "last_commit": {
+          "hash": "2cc90ea523d9e23e57c83aa9767e3fdc83407f7c",
+          "date": "2024-02-10T13:53:21Z"
+        },
+        "branch_count": 36,
+        "last_activity_at": "2024-04-30T11:36:21Z"
+      },
+      {
+        "name": "bv_nest_contract",
+        "url": "https://github.com/Block-Chain-Valley/bv_nest_contract",
+        "description": null,
+        "stars": 1,
+        "forks": 0,
+        "commit_count": 9,
+        "primary_language": "Solidity",
+        "language_proportions": {
+          "Solidity": "53.15%",
+          "TypeScript": "46.85%"
+        },
+        "last_commit": {
+          "hash": "9c5dd02afb15001ace501c088f44dec5eeebc153",
+          "date": "2023-09-20T12:42:33Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2023-09-20T12:42:37Z"
+      },
+      {
+        "name": "frontendSession0320",
+        "url": "https://github.com/Block-Chain-Valley/frontendSession0320",
+        "description": null,
+        "stars": 1,
+        "forks": 0,
+        "commit_count": 17,
+        "primary_language": "HTML",
+        "language_proportions": {
+          "HTML": "79.94%",
+          "CSS": "20.06%"
+        },
+        "last_commit": {
+          "hash": "10a100127af4b76be24a056d128c6b1cb29c21af",
+          "date": "2023-03-20T12:50:21Z"
+        },
+        "branch_count": 2,
+        "last_activity_at": "2023-03-20T12:50:32Z"
+      },
+      {
+        "name": "clonecoding-contract",
+        "url": "https://github.com/Block-Chain-Valley/clonecoding-contract",
+        "description": null,
+        "stars": 1,
+        "forks": 0,
+        "commit_count": 1,
+        "primary_language": "Solidity",
+        "language_proportions": {
+          "Solidity": "100.0%"
+        },
+        "last_commit": {
+          "hash": "c438110e74873e6d2fc64c5f702d0a525a3e42c8",
+          "date": "2022-10-08T06:29:26Z"
+        },
+        "branch_count": 11,
+        "last_activity_at": "2022-10-11T13:36:31Z"
+      },
+      {
+        "name": "HR-solution-contract",
+        "url": "https://github.com/Block-Chain-Valley/HR-solution-contract",
+        "description": "HR solution 컨트랙트 레포지토리",
+        "stars": 1,
+        "forks": 2,
+        "commit_count": 37,
+        "primary_language": "Solidity",
+        "language_proportions": {
+          "Solidity": "86.74%",
+          "TypeScript": "13.1%",
+          "Shell": "0.17%"
+        },
+        "last_commit": {
+          "hash": "cc4b9289528be5a77db258ca46745bcd166acbb7",
+          "date": "2022-10-23T14:02:51Z"
+        },
+        "branch_count": 6,
+        "last_activity_at": "2022-10-23T14:02:53Z"
+      },
+      {
+        "name": "2024-1-Server-Study",
+        "url": "https://github.com/Block-Chain-Valley/2024-1-Server-Study",
+        "description": "Nest.js 서버 스터디 실습",
+        "stars": 0,
+        "forks": 0,
+        "commit_count": 3,
+        "primary_language": "TypeScript",
+        "language_proportions": {
+          "TypeScript": "92.65%",
+          "JavaScript": "7.35%"
+        },
+        "last_commit": {
+          "hash": "20ca361241cf9dbf444b2acf9a80de75943fb1e8",
+          "date": "2024-08-18T04:02:17Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2024-08-18T04:02:20Z"
+      },
+      {
+        "name": "BV-2024-1-9th-Session",
+        "url": "https://github.com/Block-Chain-Valley/BV-2024-1-9th-Session",
+        "description": "[24-1] 9차시 테스트 코드 세션 🧪",
+        "stars": 0,
+        "forks": 0,
+        "commit_count": 9,
+        "primary_language": "Solidity",
+        "language_proportions": {
+          "Solidity": "48.39%",
+          "TypeScript": "46.87%",
+          "Shell": "2.58%",
+          "JavaScript": "2.16%"
+        },
+        "last_commit": {
+          "hash": "3f1a27d6596157dc03ef8233b6a6707b2d8933e3",
+          "date": "2024-05-28T05:48:15Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2024-05-28T05:48:27Z"
+      },
+      {
+        "name": "BV-2024-1-Donation-HW",
+        "url": "https://github.com/Block-Chain-Valley/BV-2024-1-Donation-HW",
+        "description": null,
+        "stars": 0,
+        "forks": 1,
+        "commit_count": 2,
+        "primary_language": "Solidity",
+        "language_proportions": {
+          "Solidity": "65.47%",
+          "TypeScript": "31.71%",
+          "Shell": "1.54%",
+          "JavaScript": "1.28%"
+        },
+        "last_commit": {
+          "hash": "8a02b6c249fda2aeb6791f6fb73640a28ce3477b",
+          "date": "2024-05-28T07:34:25Z"
+        },
+        "branch_count": 21,
+        "last_activity_at": "2024-07-08T14:42:50Z"
+      }
+    ],
+    "total_commits_top_10_repos": 124
+  },
+  {
+    "organization_name": "Horizon Blockchain Games",
+    "total_public_repos": 45,
+    "total_stars_top_10_repos": 381,
+    "top_10_popular_repos": [
+      {
+        "name": "remix-app",
+        "url": "https://github.com/horizon-games/remix-app",
+        "description": "Ethereum Remix Solidity IDE, electron edition",
+        "stars": 193,
+        "forks": 41,
+        "commit_count": 18,
+        "primary_language": "JavaScript",
+        "language_proportions": {
+          "JavaScript": "93.93%",
+          "Nix": "6.07%"
+        },
+        "last_commit": {
+          "hash": "4f47099d50612c33f8798dc256984d7d1f612793",
+          "date": "2019-07-09T21:52:08Z"
+        },
+        "branch_count": 19,
+        "last_activity_at": "2022-12-08T18:53:40Z"
+      },
+      {
+        "name": "Skyweaver-contracts",
+        "url": "https://github.com/horizon-games/Skyweaver-contracts",
+        "description": "Skyweaver trading card smart contracts built on Ethereum and Sequence",
+        "stars": 42,
+        "forks": 14,
+        "commit_count": 165,
+        "primary_language": "TypeScript",
+        "language_proportions": {
+          "TypeScript": "54.56%",
+          "JavaScript": "35.44%",
+          "Solidity": "10.0%"
+        },
+        "last_commit": {
+          "hash": "62ab286ed89f9e4237321398be1e4e6c042b321b",
+          "date": "2024-01-17T18:48:26Z"
+        },
+        "branch_count": 12,
+        "last_activity_at": "2024-01-17T18:48:27Z"
+      },
+      {
+        "name": "eth-state-channels-research",
+        "url": "https://github.com/horizon-games/eth-state-channels-research",
+        "description": "Ethereum state channel research for writing provably-fair games/systems in Solidity",
+        "stars": 37,
+        "forks": 7,
+        "commit_count": 343,
+        "primary_language": "Go",
+        "language_proportions": {
+          "Go": "63.19%",
+          "TypeScript": "14.97%",
+          "Solidity": "14.83%",
+          "JavaScript": "3.73%",
+          "Makefile": "2.21%",
+          "Shell": "0.74%",
+          "Dockerfile": "0.33%"
+        },
+        "last_commit": {
+          "hash": "a07c95011a4d46ce2498c734556f2cdf7e3c8706",
+          "date": "2019-05-23T14:02:37Z"
+        },
+        "branch_count": 32,
+        "last_activity_at": "2022-04-09T01:21:48Z"
+      },
+      {
+        "name": "three-text-renderer",
+        "url": "https://github.com/horizon-games/three-text-renderer",
+        "description": "Three js realtime msdf text rendering pipeline that utilizes harfbuzz for text shaping..",
+        "stars": 30,
+        "forks": 2,
+        "commit_count": 87,
+        "primary_language": "TypeScript",
+        "language_proportions": {
+          "TypeScript": "92.9%",
+          "GLSL": "7.1%"
+        },
+        "last_commit": {
+          "hash": "9b1d8fc96bb12b9da4a2d7870ff541dec4c5a806",
+          "date": "2019-12-26T18:12:33Z"
+        },
+        "branch_count": 19,
+        "last_activity_at": "2023-01-04T11:14:44Z"
+      },
+      {
+        "name": "walley",
+        "url": "https://github.com/horizon-games/walley",
+        "description": "Walley, an in-browser/on-demand Ethereum Wallet — *ALPHA*",
+        "stars": 19,
+        "forks": 3,
+        "commit_count": 60,
+        "primary_language": "TypeScript",
+        "language_proportions": {
+          "TypeScript": "64.61%",
+          "JavaScript": "26.46%",
+          "HTML": "8.92%"
+        },
+        "last_commit": {
+          "hash": "6e27670b3cb90c2839a73386dfbd68941916c4df",
+          "date": "2018-10-09T21:31:33Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2018-10-09T21:31:42Z"
+      },
+      {
+        "name": "protoc-gen-twirp_ts",
+        "url": "https://github.com/horizon-games/protoc-gen-twirp_ts",
+        "description": "TypeScript Twirp client generator",
+        "stars": 16,
+        "forks": 9,
+        "commit_count": 38,
+        "primary_language": "Go",
+        "language_proportions": {
+          "Go": "98.73%",
+          "Makefile": "1.27%"
+        },
+        "last_commit": {
+          "hash": "a30af0209061aef2e84db0f038dafaf40074436c",
+          "date": "2018-12-20T14:45:23Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2021-10-14T16:11:47Z"
+      },
+      {
+        "name": "react-ts-app",
+        "url": "https://github.com/horizon-games/react-ts-app",
+        "description": "React + MobX + TypeScript + Webpack w/ code-splitting, async module loading and optional SSR",
+        "stars": 14,
+        "forks": 6,
+        "commit_count": 26,
+        "primary_language": "TypeScript",
+        "language_proportions": {
+          "TypeScript": "82.94%",
+          "JavaScript": "16.59%",
+          "HTML": "0.47%"
+        },
+        "last_commit": {
+          "hash": "84800d85f36f029b8aef36fa17e52b196802d29d",
+          "date": "2018-04-04T22:21:11Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2018-04-04T22:21:15Z"
+      },
+      {
+        "name": "Skyweaver-downloads",
+        "url": "https://github.com/horizon-games/Skyweaver-downloads",
+        "description": "Skyweaver Game Content Downloads",
+        "stars": 13,
+        "forks": 1,
+        "commit_count": 5,
+        "primary_language": null,
+        "language_proportions": {},
+        "last_commit": {
+          "hash": "a79c6ec02ab1ba66533634d707e2821710c8a68b",
+          "date": "2025-02-13T21:50:10Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-02-13T21:50:11Z"
+      },
+      {
+        "name": "gg",
+        "url": "https://github.com/horizon-games/gg",
+        "description": "gg - ECS framework for Web games",
+        "stars": 9,
+        "forks": 2,
+        "commit_count": 185,
+        "primary_language": "TypeScript",
+        "language_proportions": {
+          "TypeScript": "100.0%"
+        },
+        "last_commit": {
+          "hash": "5ee3253d2d6521dd3855669c6fcb79389bbe290e",
+          "date": "2024-04-01T18:03:50Z"
+        },
+        "branch_count": 59,
+        "last_activity_at": "2024-04-01T18:04:22Z"
+      },
+      {
+        "name": "skyweaver.js",
+        "url": "https://github.com/horizon-games/skyweaver.js",
+        "description": "Skyweaver API & Developer SDK for Web, React Native and Nodejs",
+        "stars": 8,
+        "forks": 0,
+        "commit_count": 18,
+        "primary_language": "TypeScript",
+        "language_proportions": {
+          "TypeScript": "99.26%",
+          "JavaScript": "0.74%"
+        },
+        "last_commit": {
+          "hash": "2e849e5a4095da919964e37b3bf0a8d010b40e7d",
+          "date": "2022-09-23T20:22:13Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2022-09-23T20:22:49Z"
+      }
+    ],
+    "total_commits_top_10_repos": 945
+  },
+  {
+    "organization_name": "Blockchain Hub",
+    "total_public_repos": 43,
+    "total_stars_top_10_repos": 23,
+    "top_10_popular_repos": [
+      {
+        "name": "foxar",
+        "url": "https://github.com/bchainhub/foxar",
+        "description": null,
+        "stars": 6,
+        "forks": 1,
+        "commit_count": 2568,
+        "primary_language": "Rust",
+        "language_proportions": {
+          "Rust": "99.37%",
+          "Solidity": "0.32%",
+          "Shell": "0.26%",
+          "Dockerfile": "0.05%"
+        },
+        "last_commit": {
+          "hash": "52bfe53758da21c81a08c047001f0c56e80fa2db",
+          "date": "2024-06-03T09:58:03Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2024-06-03T09:58:43Z"
+      },
+      {
+        "name": "dapp-sveltekit-boilerplate",
+        "url": "https://github.com/bchainhub/dapp-sveltekit-boilerplate",
+        "description": "Serverless Decentralized App powered by SvelteKit and Core Ecosystem",
+        "stars": 4,
+        "forks": 0,
+        "commit_count": 71,
+        "primary_language": "Svelte",
+        "language_proportions": {
+          "Svelte": "51.66%",
+          "TypeScript": "38.86%",
+          "CSS": "7.31%",
+          "JavaScript": "1.7%",
+          "HTML": "0.47%"
+        },
+        "last_commit": {
+          "hash": "7bc3b5a5015cc8f5efa9616e9bb2b518d19d55e8",
+          "date": "2025-03-14T18:57:57Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-03-14T18:57:59Z"
+      },
+      {
+        "name": "core-license",
+        "url": "https://github.com/bchainhub/core-license",
+        "description": "CORE License ⊛",
+        "stars": 4,
+        "forks": 1,
+        "commit_count": 9,
+        "primary_language": null,
+        "language_proportions": {},
+        "last_commit": {
+          "hash": "f402289cb51932269933dae9bcd9d1567c8bde22",
+          "date": "2025-03-04T21:23:47Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2025-03-04T21:25:55Z"
+      },
+      {
+        "name": "txms.js",
+        "url": "https://github.com/bchainhub/txms.js",
+        "description": "Transaction messaging service protocol",
+        "stars": 2,
+        "forks": 0,
+        "commit_count": 80,
+        "primary_language": "JavaScript",
+        "language_proportions": {
+          "JavaScript": "67.63%",
+          "TypeScript": "32.37%"
+        },
+        "last_commit": {
+          "hash": "d554f6f5b407b8ebc36527f379574a24157e423c",
+          "date": "2024-09-01T15:27:46Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2024-09-01T15:28:04Z"
+      },
+      {
+        "name": "coco",
+        "url": "https://github.com/bchainhub/coco",
+        "description": "The open-source CSS framework strong as coconut.",
+        "stars": 2,
+        "forks": 0,
+        "commit_count": 110,
+        "primary_language": "SCSS",
+        "language_proportions": {
+          "SCSS": "66.26%",
+          "Pug": "33.33%",
+          "JavaScript": "0.41%"
+        },
+        "last_commit": {
+          "hash": "490fa12b1357da608567eb8c526a9d631d082946",
+          "date": "2024-11-06T09:49:25Z"
+        },
+        "branch_count": 2,
+        "last_activity_at": "2024-11-06T09:49:55Z"
+      },
+      {
+        "name": "remark-fediverse-user",
+        "url": "https://github.com/bchainhub/remark-fediverse-user",
+        "description": "Transformation of the fediverse user",
+        "stars": 1,
+        "forks": 0,
+        "commit_count": 43,
+        "primary_language": "TypeScript",
+        "language_proportions": {
+          "TypeScript": "100.0%"
+        },
+        "last_commit": {
+          "hash": "d41cc45b03f0fb9ce28957c51495f27e74743940",
+          "date": "2024-04-29T17:45:40Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2024-04-29T17:46:15Z"
+      },
+      {
+        "name": "countries-divisions",
+        "url": "https://github.com/bchainhub/countries-divisions",
+        "description": "A comprehensive JSON module containing primary administrative divisions for countries based on the ISO 3166-1 Alpha-2 standard.",
+        "stars": 1,
+        "forks": 0,
+        "commit_count": 7,
+        "primary_language": "JavaScript",
+        "language_proportions": {
+          "JavaScript": "100.0%"
+        },
+        "last_commit": {
+          "hash": "c94be8ae9243e86e61777b86c557c802b6216575",
+          "date": "2023-10-23T19:37:22Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2023-10-23T19:37:47Z"
+      },
+      {
+        "name": "corecdn",
+        "url": "https://github.com/bchainhub/corecdn",
+        "description": "CORE CDN",
+        "stars": 1,
+        "forks": 0,
+        "commit_count": 12,
+        "primary_language": "HTML",
+        "language_proportions": {
+          "HTML": "100.0%"
+        },
+        "last_commit": {
+          "hash": "edf39f4e2c57d29f4cab0d79c98e7bd135b05dce",
+          "date": "2024-04-02T12:38:30Z"
+        },
+        "branch_count": 1,
+        "last_activity_at": "2024-04-02T12:38:31Z"
+      },
+      {
+        "name": "vault",
+        "url": "https://github.com/bchainhub/vault",
+        "description": "Core Vault",
+        "stars": 1,
+        "forks": 0,
+        "commit_count": 16240,
+        "primary_language": "Go",
+        "language_proportions": {
+          "Go": "75.02%",
+          "JavaScript": "17.53%",
+          "Handlebars": "5.19%",
+          "HCL": "0.85%",
+          "SCSS": "0.72%",
+          "Shell": "0.44%",
+          "Makefile": "0.1%",
+          "Dockerfile": "0.06%",
+          "Batchfile": "0.03%",
+          "TypeScript": "0.03%"
+        },
+        "last_commit": {
+          "hash": "4690c541a78d76df2e4faed5b79964a6e0667368",
+          "date": "2022-11-21T22:58:34Z"
+        },
+        "branch_count": 1809,
+        "last_activity_at": "2022-11-22T12:13:08Z"
+      },
+      {
+        "name": "ican.js",
+        "url": "https://github.com/bchainhub/ican.js",
+        "description": "JavaScript ICAN Addresses validation",
+        "stars": 1,
+        "forks": 2,
+        "commit_count": 120,
+        "primary_language": "JavaScript",
+        "language_proportions": {
+          "JavaScript": "100.0%"
+        },
+        "last_commit": {
+          "hash": "3a606518021d9678bb45526d4150f037d1a001ff",
+          "date": "2025-08-14T20:50:29Z"
+        },
+        "branch_count": 2,
+        "last_activity_at": "2025-08-14T20:50:29Z"
+      }
+    ],
+    "total_commits_top_10_repos": 19260
+  }
+]
