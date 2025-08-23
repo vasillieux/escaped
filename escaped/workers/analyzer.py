@@ -435,6 +435,9 @@ def scan_git_artifacts_with_custom_heuristics(base_artifact_path, org_name, repo
         print(f"[analyzer] Artifact directory does not exist, skipping custom scan: {base_artifact_path}")
         return 
 
+    # TODO modify os.walk with ripgrep 
+    # TODO group alls heuristrics re expressions to highlight the match later
+
     for root, _, files in os.walk(base_artifact_path):
         for file_name in files[0:10]:
             if file_name.startswith('_') and file_name.endswith('.txt'):
@@ -492,8 +495,10 @@ def run_analyzers(*, path=None, org_name=None, repo_name=None, scan_type=None, e
         run_custom_analyzer_on_path(path, org_name, repo_name, source_type_label=scan_type)
 
 
-# TODO: add support for multiple analyzers 
-# i.e: trufflehog, regexps 
+# TODO: make analyzers more greedy 
+# Meaning it focuses only specific files and vars inside of them.
+# Those files which are not intended for immediatly regexp analysis, they just will save for later 
+# I.e decomp to extract strings. 
 def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, enable_custom_analyzers: bool = True):
     """
     this is the main job an analyzer worker picks up.
@@ -595,12 +600,11 @@ def analyze_repository_job(org_name, repo_name, enable_trufflehog: bool = True, 
 
     except Exception as e_big_job_error:
         print(f"[analyzer] !!! BIG PROBLEM !!! unexpected error during main analysis of {org_name}/{repo_name}: {e_big_job_error}")
-        # 'finally' will still run. re-raise so RQ knows this job bombed.
         raise
     finally:
         if local_repo_path and os.path.exists(local_repo_path):
             print(f"[analyzer] cleaning up cloned repo folder: {local_repo_path}")
-            #shutil.rmtree(local_repo_path, ignore_errors=True) # ignore_errors is safer
+            shutil.rmtree(local_repo_path, ignore_errors=True) # ignore_errors is safer
         
         # release the pipeline slot by decrementing the counter
         try:
