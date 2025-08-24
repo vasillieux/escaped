@@ -1,7 +1,7 @@
 
 # escaped 
 
-![immg](https://github.com/user-attachments/assets/6c2dd151-ad90-41cf-ba69-60918faa9f31)
+<img width="450" height="600" alt="photo_2025-08-25_00-36-11-2" src="https://github.com/user-attachments/assets/3010da60-a64a-4f25-8410-24369784c42b" />
 
 
 - [escaped](#escaped)
